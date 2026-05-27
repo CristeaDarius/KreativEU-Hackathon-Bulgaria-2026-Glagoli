@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import BottomNav from '../../components/BottomNav';
 
 // Fix default marker icons broken by Vite
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -11,20 +10,44 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({ iconUrl: markerIcon, iconRetinaUrl: markerIcon2x, shadowUrl: markerShadow });
 
-const PINS = [
+const FALLBACK_PINS = [
   { lat: 43.61197395612641, lng: 25.356363551695033 },
   { lat: 43.59754286558995, lng: 25.385690394306934 },
+  { lat: 43.6182, lng: 25.3498 },
+  { lat: 43.6054, lng: 25.3608 },
+  { lat: 43.6089, lng: 25.3742 },
+  { lat: 43.6003, lng: 25.3701 },
+  { lat: 43.6131, lng: 25.3814 },
+  { lat: 43.5948, lng: 25.3635 },
 ];
 
 const RouteMap = () => {
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
+  const markerLayer = useRef(null);
   const [places, setPlaces] = useState([]);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch('/api/places').then(r => r.json()).then(data => setPlaces(data.filter(p => p.id)));
+    setLoading(true);
+    fetch('/api/places')
+      .then(r => r.json())
+      .then(data => Promise.all(
+        data
+          .filter(p => p.id)
+          .map((place, index) => fetch(`/api/places/${place.id}`)
+            .then(r => r.ok ? r.json() : place)
+            .then(details => ({
+              ...place,
+              ...details,
+              latitude: details.latitude || FALLBACK_PINS[index % FALLBACK_PINS.length].lat,
+              longitude: details.longitude || FALLBACK_PINS[index % FALLBACK_PINS.length].lng,
+            })))
+      ))
+      .then(setPlaces)
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -36,58 +59,60 @@ const RouteMap = () => {
       attribution: '© OpenStreetMap contributors',
     }).addTo(mapInstance.current);
 
-    PINS.forEach((pin, i) => {
-      const icon = L.divIcon({
-        className: '',
-        html: `<div style="width:32px;height:32px;border-radius:50%;background:${i === 0 ? '#00262e' : '#FAF6ED'};border:2px solid ${i === 0 ? '#FAF6ED' : '#00262e'};display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;color:${i === 0 ? '#fff' : '#00262e'};box-shadow:0 2px 8px rgba(0,0,0,0.2)">${i + 1}</div>`,
-        iconSize: [32, 32],
-        iconAnchor: [16, 16],
-      });
-      L.marker([pin.lat, pin.lng], { icon }).addTo(mapInstance.current);
-    });
+    markerLayer.current = L.layerGroup().addTo(mapInstance.current);
 
     return () => {
       mapInstance.current?.remove();
       mapInstance.current = null;
+      markerLayer.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (!mapInstance.current || !markerLayer.current || !places.length) return;
+
+    markerLayer.current.clearLayers();
+    const bounds = [];
+    places.forEach((place, i) => {
+      const lat = place.latitude;
+      const lng = place.longitude;
+      if (!lat || !lng) return;
+      const icon = L.divIcon({
+        className: '',
+        html: `<div style="width:34px;height:34px;border-radius:50%;background:${i === activeIdx ? '#00262e' : '#FAF6ED'};border:2px solid ${i === activeIdx ? '#FAF6ED' : '#00262e'};display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;color:${i === activeIdx ? '#fff' : '#00262e'};box-shadow:0 3px 12px rgba(0,0,0,0.22)">${i + 1}</div>`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+      });
+      L.marker([lat, lng], { icon }).on('click', () => setActiveIdx(i)).addTo(markerLayer.current);
+      bounds.push([lat, lng]);
+    });
+
+    if (bounds.length) mapInstance.current.fitBounds(bounds, { padding: [42, 42] });
+  }, [places, activeIdx]);
 
   const active = places[activeIdx];
 
   return (
-    <div className="h-dvh bg-background text-on-surface flex flex-col overflow-hidden font-['Manrope'] antialiased">
-      {/* TopAppBar */}
-      <header className="bg-surface border-b border-outline-variant flex justify-between items-center w-full px-5 md:px-10 py-4 z-40 shrink-0">
-        <div className="flex items-center gap-4">
-          <button className="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors">
-            <span className="material-symbols-outlined text-primary">menu</span>
-          </button>
-          <h1 className="text-[24px] font-['Montserrat'] font-bold tracking-tight text-primary">CityScan</h1>
-        </div>
-        <div className="w-8 h-8 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center">
-          <span className="material-symbols-outlined text-on-surface-variant text-[18px]">person</span>
-        </div>
-      </header>
-
+    <div className="h-full bg-background text-on-surface flex flex-col overflow-hidden font-['Manrope'] antialiased">
       {/* Map */}
       <main className="flex-1 relative overflow-hidden">
         <div ref={mapRef} className="absolute inset-0 w-full h-full z-0" />
 
         {/* Route info overlay */}
-        <div className="absolute top-4 left-4 right-4 md:left-10 md:right-auto md:w-96 z-10 pointer-events-none">
+        <div className="absolute top-4 left-4 right-4 z-10 pointer-events-none">
           <div className="bg-surface/90 backdrop-blur-sm border border-outline-variant rounded-xl p-4 shadow-[0_4px_24px_rgba(0,38,46,0.06)]">
             <h2 className="text-[22px] font-['Montserrat'] font-semibold text-primary mb-1">Svishtov Cultural Route</h2>
             <div className="flex items-center gap-2 text-on-surface-variant font-['IBM_Plex_Mono'] text-[13px]">
               <span className="material-symbols-outlined text-[15px]">auto_awesome</span>
-              <span>AI-built route · Half day · {places.length} stops</span>
+              <span>{loading ? 'Building route...' : `AI-built route · Half day · ${places.length} stops`}</span>
             </div>
           </div>
         </div>
 
         {/* Bottom sheet */}
         {active && (
-          <div className="absolute bottom-0 left-0 w-full md:w-[480px] md:left-auto md:right-10 md:bottom-5 bg-surface rounded-t-3xl md:rounded-3xl shadow-[0_-8px_32px_rgba(0,38,46,0.08)] border border-outline-variant z-10 flex flex-col max-h-[60%]">
-            <div className="w-full flex justify-center pt-3 pb-1 md:hidden">
+          <div className="absolute bottom-[86px] left-0 w-full bg-surface rounded-t-3xl shadow-[0_-8px_32px_rgba(0,38,46,0.08)] border border-outline-variant z-10 flex flex-col max-h-[58%]">
+            <div className="w-full flex justify-center pt-3 pb-1">
               <div className="w-12 h-1.5 bg-outline-variant rounded-full" />
             </div>
 
@@ -134,12 +159,14 @@ const RouteMap = () => {
 
             <div className="p-4 bg-surface border-t border-outline-variant flex gap-3 shrink-0">
               <button
+                type="button"
                 onClick={() => setActiveIdx(i => Math.min(i + 1, places.length - 1))}
                 className="flex-1 bg-surface border border-outline-variant border-b-2 border-b-[#cec6b3] text-on-surface py-3 rounded-lg font-['IBM_Plex_Mono'] text-[13px] hover:bg-surface-container-high transition-colors"
               >
                 Next stop
               </button>
               <button
+                type="button"
                 onClick={() => navigate('/compendium')}
                 className="flex-[2] bg-primary border-b-2 border-b-[#123c46] text-on-primary py-3 rounded-lg font-['IBM_Plex_Mono'] text-[13px] flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
               >
@@ -149,8 +176,6 @@ const RouteMap = () => {
           </div>
         )}
       </main>
-
-      <BottomNav active="Routes" />
     </div>
   );
 };

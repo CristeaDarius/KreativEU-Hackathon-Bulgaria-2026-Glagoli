@@ -1,34 +1,36 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const tabs = [
-  { label: 'Explore', icon: 'explore', path: '/' },
+  { label: 'Explore', icon: 'explore', path: '/explore' },
   { label: 'Routes', icon: 'route', path: '/route-map' },
   { label: 'Compendium', icon: 'auto_stories', path: '/compendium' },
   { label: 'Concierge', icon: 'settings_accessibility', path: '/concierge' },
 ];
 
-const BottomNav = ({ active }) => {
-  const navigate = useNavigate();
+const BottomNav = () => {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe pt-2 bg-surface-container border-t border-outline-variant shadow-sm h-20">
-      {tabs.map(tab => {
-        const isActive = tab.label === active;
-        return (
-          <button
+    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50 px-3 pt-2 pb-safe bg-surface-container/95 backdrop-blur border-t border-outline-variant shadow-[0_-8px_24px_rgba(0,38,46,0.08)]">
+      <div className="grid grid-cols-4 gap-1">
+        {tabs.map(tab => (
+          <NavLink
             key={tab.label}
-            onClick={() => navigate(tab.path)}
-            className={`flex flex-col items-center justify-center px-4 py-1.5 rounded-xl transition-all duration-150 ${
-              isActive ? 'bg-primary-container text-on-primary-container scale-95' : 'text-on-surface-variant hover:text-primary'
+            to={tab.path}
+            className={({ isActive }) => `min-h-[58px] flex flex-col items-center justify-center gap-1 rounded-2xl transition-all duration-150 ${
+              isActive ? 'bg-primary text-on-primary shadow-sm scale-[0.98]' : 'text-on-surface-variant active:bg-surface-container-high'
             }`}
           >
-            <span className="material-symbols-outlined" style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}>
-              {tab.icon}
-            </span>
-            <span className={`text-[12px] font-['IBM_Plex_Mono'] mt-1 ${isActive ? 'font-bold' : ''}`}>{tab.label}</span>
-          </button>
-        );
-      })}
+            {({ isActive }) => (
+              <>
+                <span className="material-symbols-outlined text-[23px]" style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}>
+                  {tab.icon}
+                </span>
+                <span className={`text-[10px] font-['IBM_Plex_Mono'] leading-none ${isActive ? 'font-bold' : ''}`}>{tab.label}</span>
+              </>
+            )}
+          </NavLink>
+        ))}
+      </div>
     </nav>
   );
 };

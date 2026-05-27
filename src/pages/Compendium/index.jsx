@@ -1,43 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import BottomNav from '../../components/BottomNav';
 
 const Compendium = () => {
   const navigate = useNavigate();
   const [places, setPlaces] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch('/api/places').then(r => r.json()).then(setPlaces);
+    setLoading(true);
+    fetch('/api/places')
+      .then(r => r.json())
+      .then(data => setPlaces(data.filter(place => place.id)))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
-    <div className="min-h-dvh bg-surface flex flex-col pb-24 font-['Manrope'] antialiased">
-      {/* TopBar */}
-      <header className="hidden md:flex justify-between items-center w-full px-10 py-4 bg-surface border-b border-outline-variant fixed top-0 z-50">
-        <div className="flex items-center gap-4">
-          <h1 className="text-[24px] font-['Montserrat'] font-bold text-primary">CityScan</h1>
-        </div>
-        <nav className="flex gap-6">
-          {['Explore', 'Routes', 'Compendium', 'Concierge'].map(item => (
-            <a key={item} className={`font-['IBM_Plex_Mono'] text-[14px] px-4 py-2 rounded-lg transition-colors ${
-              item === 'Compendium' ? 'bg-primary-container text-on-primary-container font-bold' : 'text-on-surface-variant hover:bg-surface-container-high'
-            }`} href="#">{item}</a>
-          ))}
-        </nav>
-      </header>
-
-      {/* Mobile TopBar */}
-      <header className="md:hidden flex justify-between items-center px-5 py-4 bg-surface border-b border-outline-variant">
-        <h1 className="text-[24px] font-['Montserrat'] font-bold text-primary">CityScan</h1>
-        <div className="w-9 h-9 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center">
-          <span className="material-symbols-outlined text-on-surface-variant text-[20px]">person</span>
-        </div>
-      </header>
-
-      <main className="pt-4 md:pt-32 px-5 md:px-10 max-w-[1140px] mx-auto w-full flex flex-col gap-8">
+    <div className="px-5 pt-5 flex flex-col gap-7 font-['Manrope'] antialiased">
         {/* Title */}
         <section>
-          <h2 className="text-[28px] md:text-[40px] font-['Montserrat'] font-bold text-primary">Your Svishtov Compendium</h2>
+          <h1 className="text-[30px] leading-9 font-['Montserrat'] font-bold text-primary">Your Svishtov Compendium</h1>
           <p className="text-[18px] font-['Manrope'] text-on-surface-variant mt-1">Collected places, stories, and badges from your route.</p>
         </section>
 
@@ -45,7 +26,7 @@ const Compendium = () => {
         <section className="bg-surface-container-lowest rounded-[18px] border border-outline-variant p-6 shadow-sm relative overflow-hidden">
           <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 bg-cover bg-center mix-blend-multiply"
             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80')" }} />
-          <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="relative z-10 flex flex-col justify-between items-start gap-6">
             <div>
               <h3 className="text-[24px] font-['Montserrat'] font-semibold text-primary mb-1">Route Memory</h3>
               <div className="flex items-center gap-2">
@@ -53,7 +34,7 @@ const Compendium = () => {
                 <span className="font-['IBM_Plex_Mono'] text-[14px] font-bold text-tertiary-container">Level 2 Historian</span>
               </div>
             </div>
-            <div className="flex gap-8">
+            <div className="grid grid-cols-3 gap-5 w-full">
               {[
                 { value: `${places.length}`, label: 'Places' },
                 { value: '3', label: 'Badges' },
@@ -69,7 +50,8 @@ const Compendium = () => {
         </section>
 
         {/* Cards grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <section className="grid grid-cols-1 gap-4">
+          {loading && <div className="rounded-2xl bg-surface-container p-5 text-on-surface-variant">Loading collected stories...</div>}
           {places.map((p, i) => (
             <article
               key={p.id}
@@ -91,6 +73,7 @@ const Compendium = () => {
                   <span className="material-symbols-outlined text-[14px]">schedule</span> Stop {i + 1}
                 </span>
                 <button
+                  type="button"
                   onClick={() => navigate(`/concierge`)}
                   className="bg-secondary text-on-secondary px-5 py-2 rounded-lg font-['IBM_Plex_Mono'] text-[13px] hover:bg-on-secondary-container transition-colors flex items-center gap-2 active:scale-95"
                 >
@@ -111,9 +94,6 @@ const Compendium = () => {
             </div>
           </article>
         </section>
-      </main>
-
-      <BottomNav active="Compendium" />
     </div>
   );
 };

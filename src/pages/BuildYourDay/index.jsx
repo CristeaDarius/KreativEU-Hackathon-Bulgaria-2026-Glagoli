@@ -1,46 +1,41 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const options = [
+const visitorOptions = [
   { value: 'cultural', label: 'Cultural tourist', icon: 'museum' },
   { value: 'family', label: 'Family', icon: 'family_restroom' },
   { value: 'impaired', label: 'Visually impaired visitor', icon: 'blind' },
 ];
 
+const timeOptions = [
+  { value: 'quick', label: '90 minutes', icon: 'bolt' },
+  { value: 'half', label: 'Half day', icon: 'wb_twilight' },
+  { value: 'slow', label: 'Slow walk', icon: 'directions_walk' },
+];
+
 const BuildYourDay = () => {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState('cultural');
+  const [visitor, setVisitor] = useState('cultural');
+  const [time, setTime] = useState('half');
 
-  const selectedLabel = options.find(o => o.value === selected)?.label;
+  const visitorLabel = visitorOptions.find(o => o.value === visitor)?.label;
+  const timeLabel = timeOptions.find(o => o.value === time)?.label;
 
   return (
-    <div className="bg-background text-on-background min-h-screen flex flex-col antialiased">
-      {/* TopAppBar */}
-      <header className="flex justify-between items-center w-full px-5 md:px-10 py-4 bg-surface border-b border-outline-variant sticky top-0 z-50">
-        <button className="text-on-surface-variant hover:bg-surface-container-high transition-colors p-2 -ml-2 rounded-full">
-          <span className="material-symbols-outlined">menu</span>
-        </button>
-        <h1 className="text-[24px] font-['Montserrat'] font-bold tracking-tight text-primary">CityScan</h1>
-        <div className="h-8 w-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center">
-          <span className="material-symbols-outlined text-on-surface-variant text-[20px]">person</span>
-        </div>
-      </header>
-
-      {/* Main */}
-      <main className="flex-grow px-5 pt-6 pb-40 flex flex-col gap-8 max-w-lg mx-auto w-full">
+    <div className="px-5 pt-5 flex flex-col gap-7">
         {/* Progress */}
         <section className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
               <span className="font-['IBM_Plex_Mono'] text-[12px] text-outline uppercase tracking-wider">AI Profile Builder</span>
-              <span className="font-['IBM_Plex_Mono'] text-[12px] text-primary font-bold">Step 1 of 4</span>
+              <span className="font-['IBM_Plex_Mono'] text-[12px] text-primary font-bold">2 choices</span>
             </div>
             <div className="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
-              <div className="w-1/4 h-full bg-primary rounded-full transition-all duration-500" />
+              <div className="w-2/3 h-full bg-primary rounded-full transition-all duration-500" />
             </div>
           </div>
           <div className="flex flex-col gap-2 mt-2">
-            <h2 className="text-[28px] font-['Montserrat'] font-semibold text-on-surface tracking-tight">Build your Svishtov day</h2>
+            <h1 className="text-[30px] leading-9 font-['Montserrat'] font-semibold text-on-surface tracking-tight">Build your Svishtov day</h1>
             <p className="text-[16px] font-['Manrope'] text-on-surface-variant leading-relaxed">
               Answer a few questions and CityScan will create a cultural route around your pace, interests, and travel style.
             </p>
@@ -60,14 +55,15 @@ const BuildYourDay = () => {
 
         {/* Options */}
         <section className="flex flex-col gap-4">
-          <h3 className="text-[24px] font-['Montserrat'] font-semibold text-on-surface mb-2">Who are you?</h3>
+          <h2 className="text-[24px] font-['Montserrat'] font-semibold text-on-surface">Who are you?</h2>
           <div className="flex flex-col gap-3">
-            {options.map(opt => {
-              const isSelected = selected === opt.value;
+            {visitorOptions.map(opt => {
+              const isSelected = visitor === opt.value;
               return (
                 <button
+                  type="button"
                   key={opt.value}
-                  onClick={() => setSelected(opt.value)}
+                  onClick={() => setVisitor(opt.value)}
                   className={`w-full rounded-xl p-5 flex items-center justify-between transition-all duration-200 shadow-sm border ${
                     isSelected
                       ? 'bg-primary text-on-primary border-primary'
@@ -92,26 +88,43 @@ const BuildYourDay = () => {
             })}
           </div>
         </section>
-      </main>
 
-      {/* Fixed bottom CTA */}
-      <div className="fixed bottom-0 left-0 w-full bg-surface-container-lowest border-t border-outline-variant px-5 pt-4 pb-6 flex flex-col gap-4 z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]">
-        <div className="max-w-lg mx-auto w-full flex flex-col gap-4">
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[24px] font-['Montserrat'] font-semibold text-on-surface">How much time?</h2>
+          <div className="grid grid-cols-3 gap-3">
+            {timeOptions.map(opt => {
+              const isSelected = time === opt.value;
+              return (
+                <button
+                  type="button"
+                  key={opt.value}
+                  onClick={() => setTime(opt.value)}
+                  className={`rounded-2xl p-3 min-h-[112px] flex flex-col items-center justify-center gap-2 border text-center active:scale-[0.98] transition-all ${isSelected ? 'bg-secondary text-on-secondary border-secondary' : 'bg-surface-container-lowest text-on-surface border-outline-variant'}`}
+                >
+                  <span className="material-symbols-outlined text-[28px]" style={isSelected ? { fontVariationSettings: "'FILL' 1" } : {}}>{opt.icon}</span>
+                  <span className="font-['IBM_Plex_Mono'] text-[11px] font-bold uppercase tracking-wide">{opt.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="sticky bottom-[86px] -mx-5 px-5 pt-4 pb-5 bg-background/95 backdrop-blur border-t border-outline-variant flex flex-col gap-4">
           <div className="flex justify-between items-center bg-surface-container rounded-lg p-3 border border-outline-variant/30">
             <div className="flex flex-col">
               <span className="font-['IBM_Plex_Mono'] text-[11px] text-outline uppercase tracking-wide">Current Profile</span>
-              <span className="font-['IBM_Plex_Mono'] text-[14px] text-on-surface font-semibold">{selectedLabel}</span>
+              <span className="font-['IBM_Plex_Mono'] text-[14px] text-on-surface font-semibold">{visitorLabel} · {timeLabel}</span>
             </div>
           </div>
           <button
+            type="button"
             onClick={() => navigate('/route-map')}
             className="w-full bg-primary text-on-primary py-4 px-6 rounded-xl flex justify-center items-center gap-2 shadow-sm hover:opacity-95 active:scale-[0.98] transition-all border-b-2 border-primary-container"
           >
             <span className="text-[18px] font-['Manrope'] font-medium">Generate AI route</span>
             <span className="material-symbols-outlined text-[20px]">route</span>
           </button>
-        </div>
-      </div>
+        </section>
     </div>
   );
 };

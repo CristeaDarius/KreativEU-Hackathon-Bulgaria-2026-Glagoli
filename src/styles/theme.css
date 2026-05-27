@@ -4,6 +4,26 @@
 body {
   background-color: #FAF6ED;
   min-height: 100dvh;
+  margin: 0;
+  overscroll-behavior: none;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100dvh;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .stamp-shape {
@@ -20,4 +40,8 @@ body {
 
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .pb-safe { padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); }
+}
+
+@supports (padding-top: env(safe-area-inset-top)) {
+  .pt-safe { padding-top: env(safe-area-inset-top); }
 }
