@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import TalkingGuideAvatar from '../../components/avatar/TalkingGuideAvatar';
+import { useAvatarSpeech } from '../../components/avatar/useAvatarSpeech';
 import { fetchPlace, fetchPlaces, getPlaceName } from '../../lib/api';
 import { getActiveStopIndex, getPlan, getVisited, markVisited, saveActiveStopIndex, savePlan } from '../../lib/appState';
 
@@ -38,7 +40,8 @@ const RouteMap = () => {
   const [routeChatInput, setRouteChatInput] = useState('');
   const [routeChatLoading, setRouteChatLoading] = useState(false);
   const [routeChatError, setRouteChatError] = useState('');
-  const [showRouteChat, setShowRouteChat] = useState(false);
+  const [showRouteChat, setShowRouteChat] = useState(true);
+  const [storyAvatarState, setStoryAvatarState] = useState('idle');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -141,6 +144,22 @@ const RouteMap = () => {
   const active = places[activeIdx];
   const visitedCount = places.filter(place => visitedIds.includes(place.id?.toLowerCase())).length;
   const currentVisited = active ? visitedIds.includes(active.id?.toLowerCase()) : false;
+  const latestGuideMessage = [...routeChatMessages].reverse().find(message => message.role === 'assistant')?.content || '';
+  const storyText = active
+    ? active.description || active.additional_info || latestGuideMessage || `This is ${getPlaceName(active)}.`
+    : '';
+
+  const {
+    speak: speakStory,
+    stop: stopStory,
+    isSpeaking: storyIsSpeaking,
+    isSupported: storySpeechSupported,
+    error: storySpeechError,
+  } = useAvatarSpeech({
+    onStart: () => setStoryAvatarState('speaking'),
+    onEnd: () => setStoryAvatarState('idle'),
+    onError: () => setStoryAvatarState('error'),
+  });
 
   useEffect(() => {
     if (!active) return;
@@ -149,8 +168,14 @@ const RouteMap = () => {
     ]);
     setRouteChatInput('');
     setRouteChatError('');
-    setShowRouteChat(false);
+    stopStory();
+    setStoryAvatarState('idle');
+    setShowRouteChat(true);
   }, [active?.id]);
+
+  useEffect(() => {
+    return () => stopStory();
+  }, [stopStory]);
 
   const markCurrentVisited = () => {
     if (!active) return;
@@ -174,6 +199,7 @@ const RouteMap = () => {
     setRouteChatInput('');
     setRouteChatLoading(true);
     setRouteChatError('');
+    setStoryAvatarState('thinking');
 
     try {
       if (!import.meta.env.VITE_MISTRAL_API_KEY) throw new Error('Missing Mistral API key');
@@ -199,8 +225,11 @@ const RouteMap = () => {
       const data = await res.json();
       const reply = data.choices?.[0]?.message;
       setRouteChatMessages(reply ? [...updatedMessages, reply] : [...updatedMessages, { role: 'assistant', content: 'I could not create an answer from this stop description.' }]);
+      setStoryAvatarState('success');
+      window.setTimeout(() => setStoryAvatarState('idle'), 900);
     } catch {
       setRouteChatError('AI guide is unavailable. Check the API key or try again later.');
+      setStoryAvatarState('error');
     } finally {
       setRouteChatLoading(false);
     }
@@ -211,6 +240,16 @@ const RouteMap = () => {
       event.preventDefault();
       sendRouteChatMessage();
     }
+  };
+
+  const toggleStoryVoice = () => {
+    if (storyIsSpeaking) {
+      stopStory();
+      setStoryAvatarState('idle');
+      return;
+    }
+
+    speakStory(storyText);
   };
 
   return (
@@ -274,6 +313,28 @@ const RouteMap = () => {
 
               {showRouteChat && (
                 <>
+                  <TalkingGuideAvatar
+                    state={storyAvatarState}
+                    size="sm"
+                    message={storyIsSpeaking ? 'Reading the cultural story aloud.' : 'Historical guide ready for this stop.'}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={toggleStoryVoice}
+                    disabled={!storySpeechSupported || !storyText}
+                    className="w-full bg-primary-fixed text-on-primary-fixed py-3 rounded-2xl font-['IBM_Plex_Mono'] text-[12px] font-bold active:scale-[0.98] transition-transform flex items-center justify-center gap-2 disabled:opacity-50 disabled:active:scale-100"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">{storyIsSpeaking ? 'stop_circle' : 'volume_up'}</span>
+                    {storyIsSpeaking ? 'Stop story voice' : 'Listen to story'}
+                  </button>
+
+                  {(!storySpeechSupported || storySpeechError) && (
+                    <div className="rounded-2xl bg-error-container text-on-error-container px-3 py-2 text-[12px] leading-5">
+                      {storySpeechError || 'Voice playback is not supported in this browser. Try Chrome, Edge, or Safari.'}
+                    </div>
+                  )}
+
                   <div className="max-h-48 overflow-y-auto custom-scrollbar flex flex-col gap-2 pr-1">
                     {routeChatMessages.map((message, index) => {
                       const isUser = message.role === 'user';

@@ -1,0 +1,26 @@
+:root {
+  --deep-river: #123c46;
+  --danube-blue: #2f6f7e;
+  --warm-paper: #faf6ed;
+  --old-ink: #172026;
+  --copper-clay: #b66a3c;
+  --soft-gold: #d8a24a;
+  --limestone: #efe6d2;
+  --mist-blue: #cfe1e3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--warm-paper);
+  font-family: Manrope, Onest, Geist, Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--old-ink);
+}
+
+.remotion-root {
+  width: 100%;
+  height: 100%;
+}

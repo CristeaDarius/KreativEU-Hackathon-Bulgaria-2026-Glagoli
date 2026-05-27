@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import TalkingGuideAvatar from '../../components/avatar/TalkingGuideAvatar';
+import { useAvatarSpeech } from '../../components/avatar/useAvatarSpeech';
 import { fetchPlaces } from '../../lib/api';
 import { saveActiveStopIndex, savePlan } from '../../lib/appState';
 
@@ -30,6 +32,7 @@ const BuildYourDay = () => {
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(false);
   const [cityOpen, setCityOpen] = useState(false);
+  const [avatarState, setAvatarState] = useState('idle');
 
   useEffect(() => {
     fetchPlaces().then(setPlaces).catch(() => setPlaces([]));
@@ -40,6 +43,43 @@ const BuildYourDay = () => {
   const question = questions[step - 1];
   const totalSteps = questions.length + 1;
   const progress = Math.round(((step + 1) / totalSteps) * 100);
+  const aiGuideMessage = loading
+    ? 'I am choosing a route that fits your time, movement, and cultural mood.'
+    : isBasicsStep
+      ? 'Tell me how much time you have and where you want to explore. For this demo, Svishtov is ready now.'
+      : question?.dependsOn
+        ? 'I adapted this question from your mood. Choose what feels most useful for today.'
+        : question?.type === 'multi'
+          ? 'You can choose more than one. I will use these signals to shape the route.'
+          : 'Choose one option and confirm when you are ready.';
+
+  const { speak, stop, isSpeaking, isSupported: speechSupported, error: speechError } = useAvatarSpeech({
+    onStart: () => setAvatarState('speaking'),
+    onEnd: () => setAvatarState('idle'),
+    onError: () => setAvatarState('error'),
+  });
+
+  useEffect(() => {
+    return () => stop();
+  }, [stop]);
+
+  const triggerAvatarFeedback = () => {
+    // Used after answer selection. Later this can be driven by a real AI response stream.
+    stop();
+    setAvatarState('thinking');
+    window.setTimeout(() => setAvatarState('success'), 800);
+    window.setTimeout(() => setAvatarState('idle'), 1400);
+  };
+
+  const toggleGuideVoice = () => {
+    if (isSpeaking) {
+      stop();
+      setAvatarState('idle');
+      return;
+    }
+
+    speak(aiGuideMessage);
+  };
 
   const updateSingle = (key, value) => {
     setAnswers(current => ({ ...current, [key]: value }));
@@ -49,6 +89,7 @@ const BuildYourDay = () => {
     if (city !== 'Svishtov') return;
     updateSingle('city', city);
     setCityOpen(false);
+    triggerAvatarFeedback();
   };
 
   const toggleMulti = (key, value) => {
@@ -59,12 +100,14 @@ const BuildYourDay = () => {
         : [...selected, value];
       return { ...current, [key]: next };
     });
+    triggerAvatarFeedback();
   };
 
   const canContinue = isBasicsStep || getAnswerCount(answers[question?.key]) > 0;
 
   const createPlan = () => {
     setLoading(true);
+    setAvatarState('thinking');
     const hours = Number(answers.hours) || 4;
     const stopCount = hours <= 4 ? 3 : hours <= 8 ? 5 : 7;
     const selectedPlaces = places.slice(0, stopCount);
@@ -82,7 +125,10 @@ const BuildYourDay = () => {
     });
     saveActiveStopIndex(0);
 
-    setTimeout(() => navigate('/route-map'), 600);
+    setTimeout(() => {
+      setAvatarState('success');
+      navigate('/route-map');
+    }, 600);
   };
 
   const next = () => {
@@ -92,7 +138,7 @@ const BuildYourDay = () => {
   };
 
   return (
-    <div className="px-5 pt-5 pb-8 flex flex-col gap-6 min-h-full">
+    <div id="ai-guide-builder" className="px-5 pt-5 pb-8 flex flex-col gap-6 min-h-full">
       <section className="rounded-[28px] bg-primary text-on-primary p-6 shadow-sm">
         <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-primary-fixed-dim">AI route builder</span>
         <h1 className="text-[31px] leading-9 font-['Stack_Sans_Headline'] font-bold mt-2">Let’s shape today.</h1>
@@ -107,6 +153,39 @@ const BuildYourDay = () => {
         <div className="h-2 bg-surface-container-highest rounded-full overflow-hidden">
           <div className="h-full bg-secondary rounded-full transition-all" style={{ width: `${progress}%` }} />
         </div>
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <TalkingGuideAvatar
+          state={avatarState}
+          size="md"
+          message={aiGuideMessage}
+          onError={() => setAvatarState('error')}
+        />
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={toggleGuideVoice}
+            disabled={!speechSupported}
+            className="bg-surface border border-outline-variant text-on-surface py-3 rounded-2xl font-['IBM_Plex_Mono'] text-[12px] font-bold active:scale-[0.98] transition-transform flex items-center justify-center gap-2 disabled:opacity-50 disabled:active:scale-100"
+          >
+            <span className="material-symbols-outlined text-[18px]">{isSpeaking ? 'stop_circle' : 'volume_up'}</span>
+            {isSpeaking ? 'Stop voice' : 'Listen'}
+          </button>
+          <button
+            type="button"
+            onClick={() => setAvatarState('listening')}
+            className="bg-surface border border-outline-variant text-on-surface py-3 rounded-2xl font-['IBM_Plex_Mono'] text-[12px] font-bold active:scale-[0.98] transition-transform flex items-center justify-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[18px]">hearing</span>
+            Demo listen
+          </button>
+        </div>
+        {(!speechSupported || speechError) && (
+          <div className="rounded-2xl bg-error-container text-on-error-container px-3 py-2 text-[12px] leading-5">
+            {speechError || 'Voice playback is not supported in this browser. Try Chrome, Edge, or Safari.'}
+          </div>
+        )}
       </section>
 
       {loading ? (
@@ -197,7 +276,13 @@ const BuildYourDay = () => {
                     <button
                       type="button"
                       key={option}
-                      onClick={() => question.type === 'multi' ? toggleMulti(question.key, option) : updateSingle(question.key, option)}
+                      onClick={() => {
+                        if (question.type === 'multi') toggleMulti(question.key, option);
+                        else {
+                          updateSingle(question.key, option);
+                          triggerAvatarFeedback();
+                        }
+                      }}
                       className={`w-full rounded-2xl border p-4 text-left flex items-center justify-between shadow-sm active:scale-[0.98] transition-all ${selected ? 'bg-primary text-on-primary border-primary shadow-[0_8px_24px_rgba(16,64,64,0.16)]' : 'bg-surface-container-lowest text-on-surface border-outline-variant'}`}
                     >
                       <span className="text-[17px] font-['Manrope'] font-semibold">{option}</span>

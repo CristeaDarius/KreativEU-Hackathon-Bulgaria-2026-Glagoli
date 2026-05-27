@@ -70,6 +70,22 @@ const Home = () => {
         ))}
       </section>
 
+      <button
+        type="button"
+        onClick={() => navigate('/build')}
+        className="w-full rounded-[24px] bg-surface-container-lowest border border-outline-variant p-4 flex items-center gap-4 text-left shadow-sm active:scale-[0.99] transition-transform"
+      >
+        <span className="w-12 h-12 rounded-2xl bg-primary-fixed text-on-primary-fixed flex items-center justify-center shrink-0">
+          <span className="material-symbols-outlined">record_voice_over</span>
+        </span>
+        <span className="flex-1 min-w-0">
+          <span className="block font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">AI local guide</span>
+          <span className="block text-[19px] leading-6 font-['Stack_Sans_Headline'] font-bold text-primary">Open talking guide</span>
+          <span className="block text-[13px] leading-5 text-on-surface-variant mt-1">Meet the animated guide and shape your route.</span>
+        </span>
+        <span className="material-symbols-outlined text-primary">arrow_forward</span>
+      </button>
+
       <section className="flex flex-col gap-3">
         <div className="flex items-end justify-between gap-4">
           <div>

@@ -1,0 +1,21 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="128" fill="#FAF6ED"/>
+  <circle cx="256" cy="246" r="178" fill="#EFE6D2" stroke="#CFE1E3" stroke-width="10"/>
+  <path d="M149 382C163 318 202 288 256 288C310 288 349 318 363 382" fill="#123C46"/>
+  <path d="M181 381C191 337 219 316 256 316C293 316 321 337 331 381" fill="#2F6F7E" opacity="0.55"/>
+  <path d="M172 214C183 153 218 121 256 121C294 121 329 153 340 214C333 266 302 298 256 298C210 298 179 266 172 214Z" fill="#D8A24A" opacity="0.3"/>
+  <path d="M178 214C187 162 218 134 256 134C294 134 325 162 334 214C328 262 299 292 256 292C213 292 184 262 178 214Z" fill="#FAF6ED" stroke="#123C46" stroke-width="8"/>
+  <path d="M166 188C185 129 220 100 256 100C292 100 327 129 346 188C319 173 289 166 256 166C223 166 193 173 166 188Z" fill="#123C46"/>
+  <path d="M190 160C211 133 232 121 256 121C280 121 301 133 322 160" stroke="#B66A3C" stroke-width="10" stroke-linecap="round"/>
+  <path d="M215 220C226 213 238 213 247 220" stroke="#172026" stroke-width="7" stroke-linecap="round"/>
+  <path d="M265 220C276 213 288 213 297 220" stroke="#172026" stroke-width="7" stroke-linecap="round"/>
+  <path d="M254 230C249 249 248 258 256 262C264 258 263 249 258 230" stroke="#B66A3C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M228 266C246 276 266 276 284 266" stroke="#123C46" stroke-width="7" stroke-linecap="round"/>
+  <path d="M126 250C139 245 152 247 164 256" stroke="#B66A3C" stroke-width="8" stroke-linecap="round"/>
+  <path d="M348 256C360 247 373 245 386 250" stroke="#B66A3C" stroke-width="8" stroke-linecap="round"/>
+  <path d="M139 390C170 409 209 420 256 420C303 420 342 409 373 390" stroke="#B66A3C" stroke-width="10" stroke-linecap="round"/>
+  <path d="M108 118C130 94 156 76 187 64" stroke="#2F6F7E" stroke-width="8" stroke-linecap="round" opacity="0.55"/>
+  <path d="M404 118C382 94 356 76 325 64" stroke="#2F6F7E" stroke-width="8" stroke-linecap="round" opacity="0.55"/>
+  <circle cx="384" cy="331" r="22" fill="#FAF6ED" stroke="#B66A3C" stroke-width="7"/>
+  <path d="M384 318V344M371 331H397" stroke="#123C46" stroke-width="5" stroke-linecap="round"/>
+</svg>

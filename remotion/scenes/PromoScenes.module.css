@@ -1,0 +1,442 @@
+.sceneGrid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  align-items: center;
+  gap: 72px;
+  padding: 118px 150px;
+}
+
+.centerScene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 120px;
+  text-align: center;
+}
+
+.hookLine {
+  position: absolute;
+  left: 185px;
+  top: 320px;
+}
+
+.headlineLarge {
+  max-width: 1120px;
+  color: var(--deep-river);
+  font-family: "Stack Sans Headline", Manrope, system-ui, sans-serif;
+  font-size: 92px;
+  font-weight: 820;
+  letter-spacing: -0.055em;
+  line-height: 0.97;
+}
+
+.productHalo {
+  position: absolute;
+  width: 940px;
+  height: 520px;
+  border: 1px solid rgba(18, 60, 70, 0.12);
+  border-radius: 50%;
+}
+
+.phoneArea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.screen {
+  width: 100%;
+  height: 100%;
+  padding: 58px 30px 30px;
+  background: var(--warm-paper);
+}
+
+.statusBar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  color: rgba(23, 32, 38, 0.55);
+  font-family: "IBM Plex Mono", "Space Mono", monospace;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.screenEyebrow {
+  color: var(--copper-clay);
+  font-family: "IBM Plex Mono", "Space Mono", monospace;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.screenTitle {
+  margin: 8px 0 20px;
+  color: var(--deep-river);
+  font-family: "Stack Sans Headline", Manrope, system-ui, sans-serif;
+  font-size: 32px;
+  font-weight: 820;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.choiceCard,
+.chip,
+.routeCard,
+.detailCard,
+.compendiumCard {
+  border: 1px solid rgba(18, 60, 70, 0.12);
+  background: white;
+  box-shadow: 0 8px 22px rgba(18, 60, 70, 0.06);
+}
+
+.choiceCard {
+  min-height: 88px;
+  border-radius: 22px;
+  padding: 16px;
+  color: var(--old-ink);
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: end;
+}
+
+.selected {
+  background: var(--deep-river);
+  color: var(--warm-paper);
+}
+
+.questionBlock {
+  margin-top: 22px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  border-radius: 999px;
+  padding: 12px 14px;
+  color: var(--old-ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.chipSelected {
+  background: var(--copper-clay);
+  color: white;
+  border-color: transparent;
+}
+
+.primaryButton {
+  width: 100%;
+  margin-top: 22px;
+  border-radius: 22px;
+  padding: 17px;
+  background: var(--deep-river);
+  color: white;
+  text-align: center;
+  font-family: "IBM Plex Mono", "Space Mono", monospace;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.buildState {
+  margin-top: 14px;
+  color: var(--danube-blue);
+  font-family: "IBM Plex Mono", "Space Mono", monospace;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.routeSummary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.metric {
+  border-radius: 18px;
+  padding: 13px 10px;
+  background: var(--limestone);
+  color: var(--deep-river);
+  text-align: center;
+  font-family: "IBM Plex Mono", "Space Mono", monospace;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--mist-blue);
+}
+
+.routeCard {
+  position: relative;
+  z-index: 1;
+  min-height: 58px;
+  border-radius: 18px;
+  padding: 12px 14px 12px 54px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.12;
+}
+
+.stopNumber {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  width: 25px;
+  height: 25px;
+  border-radius: 9px;
+  background: var(--deep-river);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-family: "IBM Plex Mono", "Space Mono", monospace;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.mapScreen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(90deg, rgba(18, 60, 70, 0.06) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(18, 60, 70, 0.05) 1px, transparent 1px),
+    #f3efe5;
+  background-size: 46px 46px;
+}
+
+.river {
+  position: absolute;
+  left: -48px;
+  right: -48px;
+  top: 226px;
+  height: 128px;
+  background: var(--mist-blue);
+  border-radius: 999px;
+  transform: rotate(-11deg);
+}
+
+.bottomSheet {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  border-radius: 30px;
+  padding: 22px;
+  background: white;
+  box-shadow: 0 18px 50px rgba(18, 60, 70, 0.16);
+}
+
+.sheetMeta {
+  color: var(--copper-clay);
+  font-family: "IBM Plex Mono", "Space Mono", monospace;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.sheetTitle {
+  margin-top: 8px;
+  color: var(--deep-river);
+  font-family: "Stack Sans Headline", Manrope, system-ui, sans-serif;
+  font-size: 25px;
+  font-weight: 820;
+  line-height: 1;
+}
+
+.sheetActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.sheetButton {
+  border-radius: 16px;
+  padding: 12px;
+  text-align: center;
+  background: var(--deep-river);
+  color: white;
+  font-family: "IBM Plex Mono", "Space Mono", monospace;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.sheetButtonAlt {
+  background: var(--limestone);
+  color: var(--deep-river);
+}
+
+.accessibility {
+  margin-top: 12px;
+  border-radius: 999px;
+  padding: 10px 12px;
+  background: var(--mist-blue);
+  color: var(--deep-river);
+  text-align: center;
+  font-family: "IBM Plex Mono", "Space Mono", monospace;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.heroImage {
+  height: 196px;
+  border-radius: 28px;
+  background:
+    linear-gradient(145deg, rgba(18, 60, 70, 0.78), rgba(47, 111, 126, 0.52)),
+    linear-gradient(90deg, var(--limestone), var(--mist-blue));
+  margin-bottom: 18px;
+  display: flex;
+  align-items: end;
+  padding: 22px;
+  color: white;
+  font-family: "Stack Sans Headline", Manrope, system-ui, sans-serif;
+  font-size: 29px;
+  font-weight: 820;
+  line-height: 1;
+}
+
+.detailCard {
+  border-radius: 24px;
+  padding: 18px;
+  margin-top: 12px;
+}
+
+.playerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--deep-river);
+  font-weight: 900;
+}
+
+.playButton {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--deep-river);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+}
+
+.progressTrack {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--limestone);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--copper-clay);
+}
+
+.actionList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.smallAction {
+  border-radius: 16px;
+  padding: 13px 10px;
+  background: var(--limestone);
+  color: var(--deep-river);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.badgeSceneCards {
+  display: flex;
+  align-items: center;
+  gap: 42px;
+}
+
+.compendium {
+  width: 430px;
+  border-radius: 36px;
+  padding: 28px;
+  background: white;
+  box-shadow: 0 26px 70px rgba(18, 60, 70, 0.14);
+}
+
+.compendiumTitle {
+  margin: 0 0 16px;
+  color: var(--deep-river);
+  font-family: "Stack Sans Headline", Manrope, system-ui, sans-serif;
+  font-size: 34px;
+  font-weight: 820;
+  line-height: 1;
+}
+
+.compendiumText {
+  margin: 0 0 20px;
+  color: rgba(23, 32, 38, 0.68);
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.compendiumCard {
+  border-radius: 20px;
+  padding: 15px;
+  margin-top: 10px;
+  color: var(--old-ink);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.caption {
+  position: absolute;
+  left: 50%;
+  bottom: 58px;
+  width: min(1180px, calc(100% - 220px));
+  transform: translateX(-50%);
+  border-radius: 999px;
+  padding: 18px 28px;
+  background: rgba(250, 246, 237, 0.92);
+  border: 1px solid rgba(18, 60, 70, 0.1);
+  color: var(--deep-river);
+  text-align: center;
+  font-size: 25px;
+  font-weight: 780;
+  box-shadow: 0 18px 54px rgba(18, 60, 70, 0.11);
+}
+
+.outroLine {
+  margin: 36px auto 0;
+}

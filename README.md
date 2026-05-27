@@ -67,3 +67,25 @@ Each place can have a long-form description as `descriptions/<id>.txt`. Edit the
 | `npm run dev` | Start frontend + backend together |
 | `npm run build` | Build for production |
 | `npm run preview` | Preview production build |
+| `npm run video:preview` | Open Remotion Studio for the LocAIa promo video |
+| `npm run video:render` | Render `out/locaia-promo.mp4` |
+
+## Remotion Promo Video
+
+The LocAIa 45-second promo video lives in `remotion/`. It is a TypeScript Remotion setup with reusable animated components and local mock data, so it renders without the backend or external APIs.
+
+Preview the video:
+
+```bash
+npm run video:preview
+```
+
+Render the MP4:
+
+```bash
+npm run video:render
+```
+
+The rendered file is written to `out/locaia-promo.mp4`.
+
+Edit scenes in `remotion/scenes/`. Edit the timeline in `remotion/LocaiaPromo.tsx`. Edit captions, route stops, and colors in `remotion/data/routeData.ts` and `remotion/styles.css`. The voiceover script is in `remotion/voiceover-script.md`.

@@ -1,0 +1,30 @@
+.phone {
+  position: relative;
+  width: 430px;
+  height: 860px;
+  border-radius: 58px;
+  padding: 18px;
+  background: linear-gradient(145deg, #123c46, #0c2e36 72%);
+  box-shadow: 0 36px 90px rgba(18, 60, 70, 0.27), inset 0 0 0 1px rgba(250, 246, 237, 0.14);
+}
+
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 44px;
+  background: var(--warm-paper);
+}
+
+.notch {
+  position: absolute;
+  z-index: 5;
+  top: 16px;
+  left: 50%;
+  width: 128px;
+  height: 30px;
+  border-radius: 999px;
+  background: #0b2730;
+  transform: translateX(-50%);
+}

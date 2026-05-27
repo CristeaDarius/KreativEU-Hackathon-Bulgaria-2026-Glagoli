@@ -1,0 +1,12 @@
+.wave {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 72px;
+}
+
+.bar {
+  width: 9px;
+  border-radius: 999px;
+  background: var(--danube-blue);
+}

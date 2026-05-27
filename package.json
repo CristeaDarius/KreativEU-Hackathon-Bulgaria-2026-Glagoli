@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "concurrently -n frontend,backend -c cyan,yellow \"vite\" \"node server/index.js\"",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "video:preview": "remotion preview remotion/index.ts",
+    "video:render": "remotion render remotion/index.ts LocaiaPromo out/locaia-promo.mp4 --codec=h264",
+    "video:typecheck": "tsc --noEmit -p remotion/tsconfig.json"
   },
   "dependencies": {
     "concurrently": "^8.2.2",
@@ -18,7 +21,12 @@
     "react-router-dom": "^6.20.0"
   },
   "devDependencies": {
+    "@remotion/cli": "^4.0.468",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.2.0",
+    "remotion": "^4.0.468",
+    "typescript": "^6.0.3",
     "vite": "^5.0.0"
   }
 }

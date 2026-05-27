@@ -1,0 +1,50 @@
+.stamp {
+  width: 310px;
+  height: 310px;
+  border: 8px double var(--copper-clay);
+  border-radius: 50%;
+  color: var(--copper-clay);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  transform: rotate(-8deg);
+  background: rgba(250, 246, 237, 0.72);
+  box-shadow: 0 22px 54px rgba(182, 106, 60, 0.16);
+}
+
+.inner {
+  width: 244px;
+  height: 244px;
+  border: 2px solid rgba(182, 106, 60, 0.64);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 28px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: "IBM Plex Mono", "Space Mono", monospace;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: var(--deep-river);
+  font-family: "Stack Sans Headline", Manrope, system-ui, sans-serif;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 0.96;
+}
+
+.meta {
+  margin: 0;
+  color: rgba(23, 32, 38, 0.64);
+  font-size: 18px;
+  font-weight: 700;
+}

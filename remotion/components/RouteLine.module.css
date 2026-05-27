@@ -1,0 +1,17 @@
+.svg {
+  overflow: visible;
+}
+
+.pathBase {
+  fill: none;
+  stroke: rgba(18, 60, 70, 0.13);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pathProgress {
+  fill: none;
+  stroke: var(--deep-river);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

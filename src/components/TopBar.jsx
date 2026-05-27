@@ -37,14 +37,25 @@ const TopBar = () => {
           </span>
         </button>
 
-        <button
-          type="button"
-          onClick={() => navigate('/settings')}
-          className="w-10 h-10 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center active:scale-95 transition-transform"
-          aria-label="Open settings"
-        >
-          <span className="material-symbols-outlined text-on-surface-variant text-[21px]">person</span>
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => navigate('/build')}
+            className="h-10 px-3 rounded-full bg-primary text-on-primary flex items-center gap-1.5 active:scale-95 transition-transform shadow-sm"
+            aria-label="Open AI guide builder"
+          >
+            <span className="material-symbols-outlined text-[19px]">record_voice_over</span>
+            <span className="font-['IBM_Plex_Mono'] text-[10px] font-bold uppercase tracking-wide">Guide</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/settings')}
+            className="w-10 h-10 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center active:scale-95 transition-transform"
+            aria-label="Open settings"
+          >
+            <span className="material-symbols-outlined text-on-surface-variant text-[21px]">person</span>
+          </button>
+        </div>
       </div>
     </header>
   );
