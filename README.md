@@ -17,27 +17,28 @@ Project made for the KreativEU Hackathon held in Bulgaria 2026.
    cd <project-folder>
    ```
 
-2. Run the setup script:
+2. Install dependencies:
    ```bash
-   ./setup.sh
+   npm install
    ```
-   This installs dependencies and creates a `.env` file from `.env.example`.
 
-3. Update `.env` with your values.
-
-4. Start the dev server and backend in separate terminals:
+3. Copy the env file and fill in your values:
    ```bash
-   npm run dev       # frontend on http://localhost:5173
-   npm run server    # backend on http://localhost:3001
+   cp .env.example .env
    ```
+
+4. Start the app:
+   ```bash
+   npm run dev
+   ```
+
+The frontend runs at `http://localhost:5173`. The backend API runs at `http://localhost:3001` — you don't need to open that directly, the frontend proxies all `/api` requests to it automatically.
 
 ## Data
 
 ### places.csv
 
-Located at the root of the project. This is the main data file.
-
-Columns:
+Located at the root of the project. Edit it directly in your IDE or any spreadsheet tool.
 
 | Column | Description |
 |--------|-------------|
@@ -48,15 +49,9 @@ Columns:
 | `latitude` | Latitude coordinate |
 | `longitude` | Longitude coordinate |
 
-Example row:
-```
-name,why_and_how_it_will_work,id,additional_info,latitude,longitude
-The Donors Monument,"local identity, civic culture",the_donors_monument,Near the center,42.6977,23.3219
-```
-
 ### descriptions/
 
-Each place can have a long-form description stored as a plain text file named `<id>.txt` (e.g. `descriptions/the_donors_monument.txt`). Edit these files directly in the IDE. The server reads them automatically on every request.
+Each place can have a long-form description as `descriptions/<id>.txt`. Edit these directly in the IDE — the server reads them on every request.
 
 ## Environment Variables
 
@@ -64,14 +59,11 @@ Each place can have a long-form description stored as a plain text file named `<
 |----------|-------------|
 | `VITE_MISTRAL_API_KEY` | Mistral API key |
 | `VITE_MISTRAL_MODEL` | Mistral model (default: `ministral-8b-latest`) |
-| `SERVER_PORT` | Backend port (default: `3001`) |
-| `VITE_SERVER_URL` | Backend URL used by the frontend |
 
 ## Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start frontend dev server |
-| `npm run server` | Start backend server |
+| `npm run dev` | Start frontend + backend together |
 | `npm run build` | Build for production |
 | `npm run preview` | Preview production build |

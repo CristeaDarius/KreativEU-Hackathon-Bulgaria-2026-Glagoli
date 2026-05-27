@@ -1,13 +1,12 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import MainLayout from '../layouts/MainLayout';
 import FullscreenLayout from '../layouts/FullscreenLayout';
+import MainLayout from '../layouts/MainLayout';
 import Splash from '../pages/Splash';
 import Login from '../pages/Login';
 import Home from '../pages/Home';
 import BuildYourDay from '../pages/BuildYourDay';
 import RouteMap from '../pages/RouteMap';
-import RouteMapGoogle from '../pages/RouteMapGoogle';
 import Compendium from '../pages/Compendium';
 import Dashboard from '../pages/Dashboard';
 import Settings from '../pages/Settings';
@@ -28,7 +27,6 @@ const router = createBrowserRouter([
       { path: '/explore', element: <Home /> },
       { path: '/build', element: <BuildYourDay /> },
       { path: '/route-map', element: <RouteMap /> },
-      { path: '/route-map-google', element: <RouteMapGoogle /> },
       { path: '/compendium', element: <Compendium /> },
       { path: '/concierge', element: <Home /> },
       { path: '/dashboard', element: <Dashboard /> },
