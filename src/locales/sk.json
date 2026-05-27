@@ -1,0 +1,65 @@
+{
+  "app": {
+    "name": "CityScan"
+  },
+  "nav": {
+    "explore": "Preskúmať",
+    "routes": "Trasy",
+    "compendium": "Kompendium",
+    "concierge": "Concierge"
+  },
+  "splash": {
+    "subtitle": "Kultúrna trasa Svishtov"
+  },
+  "login": {
+    "tagline": "Objavte Svishtov prostredníctvom príbehov, trás a kultúrnej pamäti.",
+    "start": "Začať objavovať",
+    "guest": "Pokračovať ako hosť",
+    "terms": "Pokračovaním súhlasíte s našimi podmienkami používania."
+  },
+  "build": {
+    "label": "AI Tvorca profilu",
+    "step": "Krok 1 zo 4",
+    "title": "Zostavte si deň v Svishtove",
+    "description": "Odpovedzte na niekoľko otázok a CityScan vytvorí kultúrnu trasu podľa vášho tempa a záujmov.",
+    "ai_message": "Vitajte v Svishtove. Zostavím trasu podľa vašich záujmov, času a štýlu cestovania. Najprv, s kým objavujete?",
+    "who_are_you": "Kto ste?",
+    "cultural_tourist": "Kultúrny turista",
+    "family": "Rodina",
+    "visually_impaired": "Návštevník so zrakovým postihnutím",
+    "current_profile": "Aktuálny profil",
+    "generate": "Generovať AI trasu"
+  },
+  "route_map": {
+    "title": "Kultúrna trasa Svishtov",
+    "subtitle": "AI trasa · Pol dňa · {{count}} zastávok",
+    "current_stop": "Aktuálna zastávka",
+    "stop_of": "Zastávka {{current}} z {{total}}",
+    "heritage_site": "Pamiatková lokalita",
+    "audio_story": "AI audio príbeh",
+    "accessible_mode": "Prístupný režim",
+    "next_stop": "Ďalšia zastávka",
+    "open_stop": "Otvoriť zastávku",
+    "heritage_explorer": "Objaviteľ dedičstva"
+  },
+  "compendium": {
+    "title": "Vaše kompendium Svishtov",
+    "subtitle": "Zozbierané miesta, príbehy a odznaky z vašej trasy.",
+    "route_memory": "Pamäť trasy",
+    "level": "Úroveň 2 Historik",
+    "places": "Miesta",
+    "badges": "Odznaky",
+    "audio": "Audio",
+    "heritage_site": "Pamiatková lokalita",
+    "stop": "Zastávka {{n}}",
+    "open_story": "Otvoriť príbeh",
+    "discover_more": "Objaviť viac",
+    "discover_more_desc": "Pokračujte v ceste a odomknite ďalšie lokality."
+  },
+  "bottom_nav": {
+    "explore": "Preskúmať",
+    "routes": "Trasy",
+    "compendium": "Kompendium",
+    "concierge": "Concierge"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "app": {
+    "name": "CityScan"
+  },
+  "nav": {
+    "explore": "Explorează",
+    "routes": "Rute",
+    "compendium": "Compendiu",
+    "concierge": "Concierge"
+  },
+  "splash": {
+    "subtitle": "Ruta Culturală Svishtov"
+  },
+  "login": {
+    "tagline": "Descoperă Svishtov prin povești, rute și memorie culturală.",
+    "start": "Începe explorarea",
+    "guest": "Continuă ca vizitator",
+    "terms": "Continuând, ești de acord cu termenii noștri de utilizare."
+  },
+  "build": {
+    "label": "Constructor de Profil AI",
+    "step": "Pasul 1 din 4",
+    "title": "Construiește-ți ziua în Svishtov",
+    "description": "Răspunde la câteva întrebări și CityScan va crea o rută culturală adaptată ritmului și intereselor tale.",
+    "ai_message": "Bun venit în Svishtov. Voi construi o rută în funcție de interesele, timpul și stilul tău de călătorie. Mai întâi, cu cine explorezi?",
+    "who_are_you": "Cine ești?",
+    "cultural_tourist": "Turist cultural",
+    "family": "Familie",
+    "visually_impaired": "Vizitator cu deficiențe de vedere",
+    "current_profile": "Profil curent",
+    "generate": "Generează ruta AI"
+  },
+  "route_map": {
+    "title": "Ruta Culturală Svishtov",
+    "subtitle": "Rută AI · Jumătate de zi · {{count}} opriri",
+    "current_stop": "Oprire curentă",
+    "stop_of": "Oprirea {{current}} din {{total}}",
+    "heritage_site": "Sit patrimonial",
+    "audio_story": "Poveste audio AI",
+    "accessible_mode": "Mod accesibil",
+    "next_stop": "Oprirea următoare",
+    "open_stop": "Deschide oprirea",
+    "heritage_explorer": "Explorator de patrimoniu"
+  },
+  "compendium": {
+    "title": "Compendiul tău Svishtov",
+    "subtitle": "Locuri, povești și insigne colectate din ruta ta.",
+    "route_memory": "Memoria rutei",
+    "level": "Nivel 2 Istoric",
+    "places": "Locuri",
+    "badges": "Insigne",
+    "audio": "Audio",
+    "heritage_site": "Sit patrimonial",
+    "stop": "Oprirea {{n}}",
+    "open_story": "Deschide povestea",
+    "discover_more": "Descoperă mai mult",
+    "discover_more_desc": "Continuă călătoria pentru a debloca mai multe locații."
+  },
+  "bottom_nav": {
+    "explore": "Explorează",
+    "routes": "Rute",
+    "compendium": "Compendiu",
+    "concierge": "Concierge"
+  }
+}
