@@ -1,9 +1,147 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=IBM+Plex+Mono:wght@500&family=Manrope:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@400;600;700&family=IBM+Plex+Mono:wght@500&family=Manrope:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
+:root {
+  --locaia-primary: #104040;
+  --locaia-secondary: #B07040;
+  --locaia-ink: #202030;
+  --locaia-surface: #F6F1E8;
+  --locaia-card: #ffffff;
+  --locaia-line: #c6d0ca;
+}
+
 body {
-  background-color: #FAF6ED;
+  background-color: #F6F1E8;
   min-height: 100dvh;
+  margin: 0;
+  overscroll-behavior: none;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100dvh;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+select,
+textarea,
+input {
+  color: inherit;
+}
+
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(176, 112, 64, 0.38);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: rgba(176, 112, 64, 0.24);
+  color: var(--locaia-ink);
+}
+
+.app-control {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--locaia-card);
+  border: 1px solid var(--locaia-line);
+  border-radius: 1.25rem;
+  box-shadow: 0 2px 12px rgba(16, 64, 64, 0.05);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.app-control:focus-within {
+  border-color: rgba(176, 112, 64, 0.85);
+  box-shadow: 0 0 0 4px rgba(176, 112, 64, 0.12), 0 8px 24px rgba(16, 64, 64, 0.08);
+}
+
+.app-textarea {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  border-radius: 1rem;
+  background: transparent;
+  background-image: none !important;
+  color: var(--locaia-ink);
+  box-shadow: none;
+}
+
+.app-textarea::placeholder {
+  color: rgba(79, 86, 82, 0.82);
+}
+
+.app-range {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2.25rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.app-range::-webkit-slider-runnable-track {
+  height: 0.75rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--locaia-secondary) var(--range-progress, 8%), #e5ddd2 var(--range-progress, 8%));
+  border: 1px solid rgba(116, 128, 122, 0.35);
+  box-shadow: inset 0 1px 2px rgba(16, 64, 64, 0.08);
+}
+
+.app-range::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 2rem;
+  height: 2rem;
+  margin-top: -0.68rem;
+  border-radius: 999px;
+  background: var(--locaia-primary);
+  border: 4px solid var(--locaia-card);
+  box-shadow: 0 5px 16px rgba(16, 64, 64, 0.28);
+}
+
+.app-range::-moz-range-track {
+  height: 0.75rem;
+  border-radius: 999px;
+  background: #e5ddd2;
+  border: 1px solid rgba(116, 128, 122, 0.35);
+}
+
+.app-range::-moz-range-progress {
+  height: 0.75rem;
+  border-radius: 999px;
+  background: var(--locaia-secondary);
+}
+
+.app-range::-moz-range-thumb {
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 999px;
+  background: var(--locaia-primary);
+  border: 4px solid var(--locaia-card);
+  box-shadow: 0 5px 16px rgba(16, 64, 64, 0.28);
+}
+
+.app-range:focus-visible {
+  outline: none;
+}
+
+.app-range:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 5px rgba(176, 112, 64, 0.28), 0 5px 16px rgba(16, 64, 64, 0.28);
 }
 
 .stamp-shape {
@@ -16,8 +154,12 @@ body {
 
 .custom-scrollbar::-webkit-scrollbar { width: 4px; }
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c8ca; border-radius: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #c6d0ca; border-radius: 4px; }
 
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .pb-safe { padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); }
+}
+
+@supports (padding-top: env(safe-area-inset-top)) {
+  .pt-safe { padding-top: env(safe-area-inset-top); }
 }

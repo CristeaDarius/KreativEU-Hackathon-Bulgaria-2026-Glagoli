@@ -1,98 +1,231 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { fetchPlaces } from '../../lib/api';
+import { saveActiveStopIndex, savePlan } from '../../lib/appState';
+
+const cityOptions = ['Svishtov', 'Sofia', 'Plovdiv', 'Varna', 'Burgas', 'Ruse', 'Veliko Tarnovo'];
+
+const questionBank = [
+  { key: 'transport', prompt: 'How are you moving today?', type: 'single', options: ['Walking', 'Bike', 'Public transport', 'Car'] },
+  { key: 'mood', prompt: 'What are you in the mood for?', type: 'multi', options: ['Food', 'Nature', 'Architecture', 'Meeting new people'] },
+  { key: 'foodStyle', prompt: 'Which food moments sound good?', type: 'multi', dependsOn: 'Food', options: ['Local classics', 'Riverside cafe', 'Something sweet', 'Market snacks'] },
+  { key: 'natureStyle', prompt: 'Which nature moments sound good?', type: 'multi', dependsOn: 'Nature', options: ['River views', 'Quiet park', 'Photo spots', 'Fresh air walk'] },
+  { key: 'architectureStyle', prompt: 'Which architecture angles interest you?', type: 'multi', dependsOn: 'Architecture', options: ['Religious', 'Academic', 'Roman', 'Old town'] },
+  { key: 'socialStyle', prompt: 'Who would you like to meet?', type: 'multi', dependsOn: 'Meeting new people', options: ['Students', 'Local guides', 'Artists', 'Families'] },
+  { key: 'routeStyle', prompt: 'What should Locaia optimize for?', type: 'multi', options: ['Very relaxed', 'Accessible pace', 'Near food', 'By the river'] },
+];
+
+const getQuestions = (answers) => {
+  const moods = answers.mood || [];
+  const primaryMood = moods[0];
+  return questionBank.filter(question => !question.dependsOn || question.dependsOn === primaryMood);
+};
+
+const getAnswerCount = (answer) => Array.isArray(answer) ? answer.length : answer ? 1 : 0;
 
 const BuildYourDay = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
-  const [selected, setSelected] = useState('cultural');
+  const [answers, setAnswers] = useState({ hours: 4, city: 'Svishtov' });
+  const [step, setStep] = useState(0);
+  const [places, setPlaces] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [cityOpen, setCityOpen] = useState(false);
 
-  const options = [
-    { value: 'cultural', label: t('build.cultural_tourist'), icon: 'museum' },
-    { value: 'family', label: t('build.family'), icon: 'family_restroom' },
-    { value: 'impaired', label: t('build.visually_impaired'), icon: 'blind' },
-  ];
+  useEffect(() => {
+    fetchPlaces().then(setPlaces).catch(() => setPlaces([]));
+  }, []);
 
-  const selectedLabel = options.find(o => o.value === selected)?.label;
+  const questions = getQuestions(answers);
+  const isBasicsStep = step === 0;
+  const question = questions[step - 1];
+  const totalSteps = questions.length + 1;
+  const progress = Math.round(((step + 1) / totalSteps) * 100);
+
+  const updateSingle = (key, value) => {
+    setAnswers(current => ({ ...current, [key]: value }));
+  };
+
+  const chooseCity = (city) => {
+    if (city !== 'Svishtov') return;
+    updateSingle('city', city);
+    setCityOpen(false);
+  };
+
+  const toggleMulti = (key, value) => {
+    setAnswers(current => {
+      const selected = current[key] || [];
+      const next = selected.includes(value)
+        ? selected.filter(item => item !== value)
+        : [...selected, value];
+      return { ...current, [key]: next };
+    });
+  };
+
+  const canContinue = isBasicsStep || getAnswerCount(answers[question?.key]) > 0;
+
+  const createPlan = () => {
+    setLoading(true);
+    const hours = Number(answers.hours) || 4;
+    const stopCount = hours <= 4 ? 3 : hours <= 8 ? 5 : 7;
+    const selectedPlaces = places.slice(0, stopCount);
+    const moods = answers.mood?.length ? answers.mood : ['AI-built'];
+
+    savePlan({
+      createdAt: new Date().toISOString(),
+      city: answers.city,
+      hours,
+      time: `${hours}h`,
+      transport: answers.transport,
+      mood: moods.join(' + '),
+      answers,
+      placeIds: selectedPlaces.map(place => place.id),
+    });
+    saveActiveStopIndex(0);
+
+    setTimeout(() => navigate('/route-map'), 600);
+  };
+
+  const next = () => {
+    if (!canContinue || loading) return;
+    if (step >= totalSteps - 1) createPlan();
+    else setStep(current => current + 1);
+  };
 
   return (
-    <div className="bg-background text-on-background min-h-screen flex flex-col antialiased">
-      <header className="flex justify-between items-center w-full px-5 md:px-10 py-4 bg-surface border-b border-outline-variant sticky top-0 z-50">
-        <button className="text-on-surface-variant hover:bg-surface-container-high transition-colors p-2 -ml-2 rounded-full">
-          <span className="material-symbols-outlined">menu</span>
-        </button>
-        <h1 className="text-[24px] font-['Montserrat'] font-bold tracking-tight text-primary">{t('app.name')}</h1>
-        <div className="h-8 w-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center">
-          <span className="material-symbols-outlined text-on-surface-variant text-[20px]">person</span>
+    <div className="px-5 pt-5 pb-8 flex flex-col gap-6 min-h-full">
+      <section className="rounded-[28px] bg-primary text-on-primary p-6 shadow-sm">
+        <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-primary-fixed-dim">AI route builder</span>
+        <h1 className="text-[31px] leading-9 font-['Stack_Sans_Headline'] font-bold mt-2">Let’s shape today.</h1>
+        <p className="text-primary-fixed-dim mt-3 leading-6">Choose your constraints, then Locaia adapts the next questions from your mood.</p>
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <div className="flex justify-between items-center font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant">
+          <span>Step {step + 1} of {totalSteps}</span>
+          <span>{progress}%</span>
         </div>
-      </header>
+        <div className="h-2 bg-surface-container-highest rounded-full overflow-hidden">
+          <div className="h-full bg-secondary rounded-full transition-all" style={{ width: `${progress}%` }} />
+        </div>
+      </section>
 
-      <main className="flex-grow px-5 pt-6 pb-40 flex flex-col gap-8 max-w-lg mx-auto w-full">
-        <section className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
-              <span className="font-['IBM_Plex_Mono'] text-[12px] text-outline uppercase tracking-wider">{t('build.label')}</span>
-              <span className="font-['IBM_Plex_Mono'] text-[12px] text-primary font-bold">{t('build.step')}</span>
-            </div>
-            <div className="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
-              <div className="w-1/4 h-full bg-primary rounded-full transition-all duration-500" />
-            </div>
-          </div>
-          <div className="flex flex-col gap-2 mt-2">
-            <h2 className="text-[28px] font-['Montserrat'] font-semibold text-on-surface tracking-tight">{t('build.title')}</h2>
-            <p className="text-[16px] font-['Manrope'] text-on-surface-variant leading-relaxed">{t('build.description')}</p>
-          </div>
+      {loading ? (
+        <section className="rounded-[28px] bg-surface-container-lowest border border-outline-variant p-6 text-center flex flex-col items-center gap-4">
+          <div className="w-9 h-9 border-2 border-secondary border-t-transparent rounded-full animate-spin" />
+          <p className="text-on-surface-variant leading-6">Choosing a city, places, list, and map route...</p>
         </section>
+      ) : (
+        <section className="rounded-[28px] bg-surface-container-lowest border border-outline-variant p-5 flex flex-col gap-5 shadow-sm">
+          {isBasicsStep ? (
+            <>
+              <div>
+                <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">Pre-defined question</span>
+                <h2 className="text-[28px] leading-8 font-['Stack_Sans_Headline'] font-bold text-primary mt-2">How long and where?</h2>
+              </div>
 
-        <section className="bg-surface-container rounded-xl p-5 border-l-[3px] border-primary-fixed flex gap-4 items-start shadow-[0_4px_30px_rgba(0,38,46,0.06)] relative overflow-hidden">
-          <div className="absolute right-0 top-0 w-24 h-24 bg-primary-fixed opacity-10 rounded-bl-full pointer-events-none" />
-          <div className="bg-surface-container-lowest rounded-full p-2 shrink-0 border border-outline-variant/50 shadow-sm relative z-10">
-            <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>explore</span>
-          </div>
-          <p className="text-[16px] font-['Manrope'] text-on-surface relative z-10 pt-1">{t('build.ai_message')}</p>
-        </section>
+              <div className="app-control p-4 flex flex-col gap-4">
+                <div className="flex items-end justify-between">
+                  <span className="font-['Stack_Sans_Headline'] text-[22px] font-bold text-primary">{answers.hours} hours</span>
+                  <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">3-16h</span>
+                </div>
+                <input
+                  type="range"
+                  min="3"
+                  max="16"
+                  value={answers.hours}
+                  onChange={event => updateSingle('hours', Number(event.target.value))}
+                  className="app-range"
+                  style={{ '--range-progress': `${((answers.hours - 3) / 13) * 100}%` }}
+                />
+                <div className="flex justify-between font-['IBM_Plex_Mono'] text-[10px] uppercase tracking-widest text-outline">
+                  <span>3h</span>
+                  <span>16h</span>
+                </div>
+              </div>
 
-        <section className="flex flex-col gap-4">
-          <h3 className="text-[24px] font-['Montserrat'] font-semibold text-on-surface mb-2">{t('build.who_are_you')}</h3>
-          <div className="flex flex-col gap-3">
-            {options.map(opt => {
-              const isSelected = selected === opt.value;
-              return (
-                <button key={opt.value} onClick={() => setSelected(opt.value)}
-                  className={`w-full rounded-xl p-5 flex items-center justify-between transition-all duration-200 shadow-sm border ${
-                    isSelected ? 'bg-primary text-on-primary border-primary' : 'bg-surface-container-lowest text-on-surface border-outline-variant hover:bg-surface-container-low'
-                  }`}
+              <div className="app-control p-4 flex flex-col gap-3 relative">
+                <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">Preferred city</span>
+                <button
+                  type="button"
+                  onClick={() => setCityOpen(open => !open)}
+                  className="w-full flex items-center justify-between gap-3 text-left rounded-2xl bg-primary-fixed/70 text-primary px-4 py-3 border border-outline-variant/70 active:scale-[0.99] transition-transform"
+                  aria-expanded={cityOpen}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isSelected ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container'}`}>
-                      <span className="material-symbols-outlined" style={isSelected ? { fontVariationSettings: "'FILL' 1" } : {}}>{opt.icon}</span>
-                    </div>
-                    <span className="text-[18px] font-['Manrope'] font-medium">{opt.label}</span>
-                  </div>
-                  <span className={`material-symbols-outlined transition-opacity ${isSelected ? 'opacity-100' : 'opacity-0'}`}>check_circle</span>
+                  <span className="font-['Stack_Sans_Headline'] text-[22px] font-bold">{answers.city}</span>
+                  <span className={`material-symbols-outlined transition-transform ${cityOpen ? 'rotate-180' : ''}`}>expand_more</span>
                 </button>
-              );
-            })}
-          </div>
-        </section>
-      </main>
 
-      <div className="fixed bottom-0 left-0 w-full bg-surface-container-lowest border-t border-outline-variant px-5 pt-4 pb-6 flex flex-col gap-4 z-40">
-        <div className="max-w-lg mx-auto w-full flex flex-col gap-4">
-          <div className="flex justify-between items-center bg-surface-container rounded-lg p-3 border border-outline-variant/30">
-            <div className="flex flex-col">
-              <span className="font-['IBM_Plex_Mono'] text-[11px] text-outline uppercase tracking-wide">{t('build.current_profile')}</span>
-              <span className="font-['IBM_Plex_Mono'] text-[14px] text-on-surface font-semibold">{selectedLabel}</span>
-            </div>
-          </div>
-          <button onClick={() => navigate('/route-map')}
-            className="w-full bg-primary text-on-primary py-4 px-6 rounded-xl flex justify-center items-center gap-2 shadow-sm active:scale-[0.98] transition-all border-b-2 border-primary-container"
+                {cityOpen && (
+                  <div className="rounded-[22px] bg-surface-container-lowest border border-outline-variant shadow-[0_12px_32px_rgba(16,64,64,0.14)] overflow-hidden">
+                    {cityOptions.map(city => {
+                      const available = city === 'Svishtov';
+                      const selected = answers.city === city;
+                      return (
+                        <button
+                          key={city}
+                          type="button"
+                          disabled={!available}
+                          onClick={() => chooseCity(city)}
+                          className={`w-full px-4 py-3 flex items-center justify-between text-left border-b border-outline-variant/50 last:border-b-0 transition-colors ${selected ? 'bg-primary text-on-primary' : available ? 'bg-surface-container-lowest text-on-surface active:bg-surface-container' : 'bg-surface-container/60 text-outline cursor-not-allowed'}`}
+                        >
+                          <span className="font-['Manrope'] text-[15px] font-semibold">{city}</span>
+                          <span className="font-['IBM_Plex_Mono'] text-[10px] uppercase tracking-widest">
+                            {available ? selected ? 'Selected' : 'Available' : 'Coming soon'}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">
+                  {question.dependsOn ? 'Generated from your mood' : question.type === 'multi' ? 'Multiple answers allowed' : 'Pre-defined question'}
+                </span>
+                <h2 className="text-[28px] leading-8 font-['Stack_Sans_Headline'] font-bold text-primary mt-2">{question.prompt}</h2>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3">
+                {question.options.map(option => {
+                  const selected = question.type === 'multi'
+                    ? (answers[question.key] || []).includes(option)
+                    : answers[question.key] === option;
+                  return (
+                    <button
+                      type="button"
+                      key={option}
+                      onClick={() => question.type === 'multi' ? toggleMulti(question.key, option) : updateSingle(question.key, option)}
+                      className={`w-full rounded-2xl border p-4 text-left flex items-center justify-between shadow-sm active:scale-[0.98] transition-all ${selected ? 'bg-primary text-on-primary border-primary shadow-[0_8px_24px_rgba(16,64,64,0.16)]' : 'bg-surface-container-lowest text-on-surface border-outline-variant'}`}
+                    >
+                      <span className="text-[17px] font-['Manrope'] font-semibold">{option}</span>
+                      <span className="material-symbols-outlined">{selected ? 'check_circle' : question.type === 'multi' ? 'add_circle' : 'radio_button_unchecked'}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </section>
+      )}
+
+      {!loading && (
+        <section className="sticky bottom-0 -mx-5 px-5 pt-4 pb-5 bg-background/95 backdrop-blur border-t border-outline-variant flex gap-3">
+          {step > 0 && (
+            <button type="button" onClick={() => setStep(step - 1)} className="basis-1/3 bg-surface border border-outline-variant text-on-surface rounded-2xl py-4 font-['IBM_Plex_Mono'] text-[13px] font-bold active:scale-[0.98] transition-transform">Back</button>
+          )}
+          <button
+            type="button"
+            onClick={next}
+            disabled={!canContinue}
+            className="flex-1 bg-primary text-on-primary rounded-2xl py-4 font-['IBM_Plex_Mono'] text-[14px] font-bold active:scale-[0.98] transition-transform disabled:opacity-45"
           >
-            <span className="text-[18px] font-['Manrope'] font-medium">{t('build.generate')}</span>
-            <span className="material-symbols-outlined text-[20px]">route</span>
+            {step >= totalSteps - 1 ? 'Generate route' : 'Next'}
           </button>
-        </div>
-      </div>
+        </section>
+      )}
     </div>
   );
 };
