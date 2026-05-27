@@ -1,34 +1,21 @@
 {
-  "app": {
-    "name": "CityScan"
-  },
-  "nav": {
-    "explore": "Odkryj",
-    "routes": "Trasy",
-    "compendium": "Kompendium",
-    "concierge": "Concierge"
-  },
-  "splash": {
-    "subtitle": "Kulturowy Szlak Svishtov"
-  },
+  "app": { "name": "CityScan" },
+  "nav": { "explore": "Odkryj", "routes": "Trasy", "compendium": "Kompendium", "concierge": "Concierge" },
+  "splash": { "subtitle": "Kulturowy Szlak Svishtov" },
   "login": {
     "tagline": "Odkryj Svishtov przez opowieści, trasy i kulturową pamięć.",
-    "start": "Zacznij odkrywać",
+    "start": "Zaloguj się",
     "guest": "Kontynuuj jako gość",
-    "terms": "Kontynuując, zgadzasz się z naszymi warunkami użytkowania."
+    "terms": "Demo logowanie przechowuje stan aplikacji lokalnie na tym urządzeniu."
   },
   "build": {
-    "label": "Kreator profilu AI",
-    "step": "Krok 1 z 4",
-    "title": "Zaplanuj swój dzień w Svishtovie",
-    "description": "Odpowiedz na kilka pytań, a CityScan stworzy trasę kulturową dopasowaną do twojego tempa i zainteresowań.",
-    "ai_message": "Witaj w Svishtovie. Stworzę trasę dopasowaną do twoich zainteresowań, czasu i stylu podróżowania. Najpierw, z kim odkrywasz?",
-    "who_are_you": "Kim jesteś?",
-    "cultural_tourist": "Turysta kulturowy",
-    "family": "Rodzina",
-    "visually_impaired": "Odwiedzający z dysfunkcją wzroku",
-    "current_profile": "Aktualny profil",
-    "generate": "Generuj trasę AI"
+    "label": "Kreator trasy AI",
+    "title": "Ukształtujmy dzisiejszy dzień.",
+    "description": "Wybierz ograniczenia, a Locaia dostosuje pytania do Twojego nastroju.",
+    "back": "Wstecz",
+    "next": "Dalej",
+    "generate": "Generuj trasę",
+    "loading": "Wybieranie miasta, miejsc, listy i trasy na mapie..."
   },
   "route_map": {
     "title": "Kulturowy Szlak Svishtov",
@@ -38,23 +25,138 @@
     "heritage_site": "Obiekt dziedzictwa",
     "audio_story": "Historia audio AI",
     "accessible_mode": "Tryb dostępności",
-    "next_stop": "Następny przystanek",
+    "next_stop": "Dalej",
+    "prev_stop": "Wstecz",
     "open_stop": "Otwórz przystanek",
-    "heritage_explorer": "Odkrywca dziedzictwa"
+    "heritage_explorer": "Odkrywca dziedzictwa",
+    "mark_visited": "Oznacz jako odwiedzone",
+    "visited": "Odwiedzone",
+    "go_there": "Idź tam",
+    "end_route": "Zakończ trasę",
+    "route_ended": "Trasa zakończona",
+    "trip_summary": "Podsumowanie podróży",
+    "summary_text": "Odwiedziłeś {{visited}} z {{total}} przystanków. Zapisane zdjęcia są dostępne w Twojej kolekcji.",
+    "in_route_ai": "AI na trasie",
+    "ask_stop": "Zapytaj o ten przystanek",
+    "thinking": "Myśli...",
+    "loading": "Budowanie trasy...",
+    "empty": "Brak dostępnych przystanków.",
+    "fallback_desc": "Punkt kulturowej pamięci związany z tożsamością Svishtova.",
+    "ai_error": "Nie udało się stworzyć odpowiedzi z opisu tego przystanku."
   },
   "compendium": {
-    "title": "Twoje kompendium Svishtov",
-    "subtitle": "Zebrane miejsca, opowieści i odznaki z twojej trasy.",
+    "title": "Twoja kolekcja",
+    "subtitle": "Historie dziedzictwa zapisane po zrobieniu demo zdjęcia.",
     "route_memory": "Pamięć trasy",
     "level": "Poziom 2 Historyk",
-    "places": "Miejsca",
+    "saved": "Zapisane",
     "badges": "Odznaki",
     "audio": "Audio",
     "heritage_site": "Obiekt dziedzictwa",
     "stop": "Przystanek {{n}}",
     "open_story": "Otwórz historię",
-    "discover_more": "Odkryj więcej",
-    "discover_more_desc": "Kontynuuj podróż, aby odblokować więcej lokalizacji."
+    "empty": "Brak zebranych historii. Idź do przystanku dziedzictwa, zrób demo zdjęcie i zapisz je tutaj.",
+    "discover_more": "Zapisz więcej",
+    "discover_more_desc": "Fotografuj przy przystankach dziedzictwa, aby rozwijać kolekcję."
+  },
+  "concierge": {
+    "welcome": "Wybierz miejsce i zapytaj mnie o jego historię. Odpowiem tylko na podstawie lokalnego opisu dostępnego w Locaia.",
+    "ready": "Jestem gotowy poprowadzić Cię przez {{place}}. Co chciałbyś wiedzieć?",
+    "thinking": "Myśli...",
+    "placeholder": "Zapytaj o {{place}}",
+    "error_places": "Przewodnik nie może teraz załadować miejsc.",
+    "error_place": "Tego miejsca nie można było otworzyć.",
+    "error_ai": "Przewodnik AI jest niedostępny. Sprawdź klucz API lub spróbuj ponownie.",
+    "no_places": "Brak dostępnych miejsc",
+    "current_story": "Aktualna historia"
+  },
+  "home": {
+    "greeting": "Cześć {{name}}! Co robisz dziś?",
+    "route_ready": "Twoja trasa jest gotowa. Kontynuuj z mapy kiedy chcesz.",
+    "no_route": "Odpowiedz na kilka pytań, a Locaia zbuduje prostą trasę na dziś.",
+    "plan_day": "Zaplanuj dzień",
+    "plan_another": "Zaplanuj inny dzień",
+    "continue_route": "Kontynuuj trasę",
+    "city": "Miasto",
+    "time": "Czas",
+    "visited": "Odwiedzone",
+    "not_set": "Nie ustawiono",
+    "choose": "Wybierz",
+    "active_route": "Aktywna trasa",
+    "completed_route": "Ukończona trasa",
+    "no_route_yet": "Brak trasy",
+    "your_stops": "Twoje przystanki",
+    "ready": "Gotowe gdy jesteś",
+    "map": "Mapa",
+    "loading": "Ładowanie miejsc...",
+    "error": "Miejsca są niedostępne. Zacznij od kreatora tras lub spróbuj ponownie.",
+    "empty": "Brak aktywnej trasy. Kliknij \"Zaplanuj dzień\" aby utworzyć.",
+    "heritage_stop": "Przystanek dziedzictwa"
+  },
+  "settings": {
+    "label": "Preferencje",
+    "title": "Ustawienia",
+    "description": "Opcje dla wygodniejszej trasy kulturowej.",
+    "accessible_title": "Tryb dostępności",
+    "accessible_desc": "Priorytetyzuj czytelny tekst, proste poruszanie się i czytelne przystanki.",
+    "audio_title": "Historie audio",
+    "audio_desc": "Przygotuj narrowane opisy dziedzictwa dla każdego przystanku.",
+    "language_title": "Język",
+    "language_desc": "Treść trasy po polsku dla demo hackathonu."
+  },
+  "questionnaire": {
+    "label": "Opcjonalna konfiguracja",
+    "title": "Pomóż Locaia dostosować się do Ciebie.",
+    "description": "Te predefiniowane odpowiedzi personalizują tempo i dostępność trasy. Możesz je pominąć.",
+    "skip": "Pomiń",
+    "continue": "Kontynuuj"
+  },
+  "visit": {
+    "loading": "Otwieranie przystanku...",
+    "error": "Ten przystanek nie może być teraz otwarty.",
+    "arrived": "Dotarłeś",
+    "heritage_desc": "Wygląda jak przystanek dziedzictwa. Zrób demo zdjęcie aby odblokować kartę historii.",
+    "non_heritage_desc": "To jest przystanek trasy, ale nie element kolekcji dziedzictwa.",
+    "mark_visited": "Oznacz jako odwiedzone",
+    "marked_visited": "Oznaczono jako odwiedzone",
+    "mark_no_save": "Oznacz odwiedzone bez zapisywania",
+    "back_route": "Wróć do trasy",
+    "demo_camera": "Demo kamera",
+    "take_picture": "Zrób zdjęcie",
+    "unlocked": "Odblokowana historia",
+    "fallback_desc": "Punkt kulturowej pamięci związany z lokalną tożsamością.",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "saved": "Zapisano",
+    "non_heritage_visit": "Możesz oznaczyć to miejsce jako odwiedzone. Nie zostanie zapisane w kolekcji dziedzictwa."
+  },
+  "not_found": {
+    "title": "Trasa nie znaleziona",
+    "description": "Ten ekran nie jest częścią mobilnej podróży Locaia.",
+    "back": "Wróć do Dziś"
+  },
+  "dashboard": {
+    "label": "Status podróży",
+    "title": "Twoja trasa jest gotowa.",
+    "description": "Otwórz mapę, kontynuuj zbieranie historii lub zapytaj przewodnika o przystanek.",
+    "stops": "Przystanki",
+    "badges": "Odznaki",
+    "audio": "Audio",
+    "route": "Trasa",
+    "open_map": "Otwórz mapę trasy"
+  },
+  "topbar": {
+    "today": "Dziś",
+    "build": "Zbuduj trasę",
+    "route_map": "Mapa trasy",
+    "collection": "Kolekcja",
+    "ai_guide": "Przewodnik AI",
+    "dashboard": "Panel",
+    "settings": "Ustawienia",
+    "questionnaire": "Kwestionariusz",
+    "setup": "Konfiguracja",
+    "visit": "Odwiedź przystanek",
+    "default": "Locaia"
   },
   "bottom_nav": {
     "explore": "Odkryj",

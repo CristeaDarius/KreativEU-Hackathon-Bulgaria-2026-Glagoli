@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { fetchPlaces, getPlaceName } from '../../lib/api';
 import { getPlan, getProfile, getVisited } from '../../lib/appState';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [places, setPlaces] = useState([]);
   const [plan, setPlan] = useState(null);
   const [visited, setVisited] = useState([]);
@@ -19,7 +21,7 @@ const Home = () => {
     setLoading(true);
     fetchPlaces()
       .then(setPlaces)
-      .catch(() => setError('Places are unavailable right now. Start with the route builder or try again later.'))
+      .catch(() => setError(t('home.error')))
       .finally(() => setLoading(false));
   }, []);
 
@@ -27,12 +29,11 @@ const Home = () => {
     ? plan.placeIds.map(id => places.find(place => place.id.toLowerCase() === id.toLowerCase())).filter(Boolean)
     : places.slice(0, 4);
 
-  const greetingName = profile?.gender && profile.gender !== 'Prefer not to say' ? 'there' : 'there';
   const hasRoute = Boolean(plan?.placeIds?.length);
   const routeEnded = Boolean(plan?.endedAt);
   const primaryAction = !hasRoute || routeEnded
-    ? { label: routeEnded ? 'Plan another day' : "Plan my day", path: '/build', icon: 'auto_awesome' }
-    : { label: 'Continue route', path: '/route-map', icon: 'route' };
+    ? { label: routeEnded ? t('home.plan_another') : t('home.plan_day'), path: '/build', icon: 'auto_awesome' }
+    : { label: t('home.continue_route'), path: '/route-map', icon: 'route' };
 
   return (
     <div className="px-5 pt-5 pb-8 flex flex-col gap-6">
@@ -42,10 +43,10 @@ const Home = () => {
           <span className="material-symbols-outlined text-on-secondary text-[34px]">auto_awesome</span>
         </div>
         <div className="relative z-10 flex flex-col gap-3 max-w-[260px]">
-          <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-[0.18em] text-primary-fixed-dim">Today</span>
-          <h1 className="text-[34px] leading-[38px] font-['Stack_Sans_Headline'] font-bold tracking-tight">Hi {greetingName}! What are you up to today?</h1>
+          <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-[0.18em] text-primary-fixed-dim">{t('topbar.today')}</span>
+          <h1 className="text-[34px] leading-[38px] font-['Stack_Sans_Headline'] font-bold tracking-tight">{t('home.greeting', { name: 'there' })}</h1>
           <p className="text-[15px] leading-6 text-primary-fixed-dim">
-            {hasRoute && !routeEnded ? 'Your route is ready. Continue from the map whenever you want.' : 'Answer a few choices and Locaia will build a simple route for today.'}
+            {hasRoute && !routeEnded ? t('home.route_ready') : t('home.no_route')}
           </p>
         </div>
         <button
@@ -59,9 +60,9 @@ const Home = () => {
 
       <section className="grid grid-cols-3 gap-3">
         {[
-          { value: plan?.city || 'Not set', label: 'City' },
-          { value: plan?.time || 'Choose', label: 'Time' },
-          { value: visited.length, label: 'Visited' },
+          { value: plan?.city || t('home.not_set'), label: t('home.city') },
+          { value: plan?.time || t('home.choose'), label: t('home.time') },
+          { value: visited.length, label: t('home.visited') },
         ].map(stat => (
           <article key={stat.label} className="rounded-2xl bg-surface-container-lowest border border-outline-variant p-3 min-h-[86px] flex flex-col justify-between shadow-sm">
             <span className="text-[20px] leading-6 font-['Stack_Sans_Headline'] font-bold text-primary truncate">{stat.value}</span>
@@ -73,17 +74,19 @@ const Home = () => {
       <section className="flex flex-col gap-3">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">{hasRoute ? routeEnded ? 'Completed route' : 'Active route' : 'No route yet'}</span>
-            <h2 className="text-[24px] font-['Stack_Sans_Headline'] font-semibold text-primary">{hasRoute ? 'Your stops' : 'Ready when you are'}</h2>
+            <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">
+              {hasRoute ? routeEnded ? t('home.completed_route') : t('home.active_route') : t('home.no_route_yet')}
+            </span>
+            <h2 className="text-[24px] font-['Stack_Sans_Headline'] font-semibold text-primary">{hasRoute ? t('home.your_stops') : t('home.ready')}</h2>
           </div>
-          {hasRoute && <button type="button" onClick={() => navigate('/route-map')} className="text-primary font-['IBM_Plex_Mono'] text-[12px] font-bold">Map</button>}
+          {hasRoute && <button type="button" onClick={() => navigate('/route-map')} className="text-primary font-['IBM_Plex_Mono'] text-[12px] font-bold">{t('home.map')}</button>}
         </div>
 
-        {loading && <div className="rounded-2xl bg-surface-container p-5 text-on-surface-variant">Loading places...</div>}
+        {loading && <div className="rounded-2xl bg-surface-container p-5 text-on-surface-variant">{t('home.loading')}</div>}
         {error && <div className="rounded-2xl bg-error-container p-5 text-on-error-container">{error}</div>}
 
         {!loading && !error && !hasRoute && (
-          <div className="rounded-2xl bg-surface-container p-5 text-on-surface-variant leading-6">No active route yet. Tap “Plan my day” to create one.</div>
+          <div className="rounded-2xl bg-surface-container p-5 text-on-surface-variant leading-6">{t('home.empty')}</div>
         )}
 
         {!loading && !error && hasRoute && routePlaces.map((place, index) => (
@@ -95,7 +98,7 @@ const Home = () => {
           >
             <span className="w-12 h-12 rounded-2xl bg-secondary-container text-secondary flex items-center justify-center shrink-0 font-['IBM_Plex_Mono'] font-bold">{index + 1}</span>
             <span className="flex-1 min-w-0">
-              <span className="block font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">Heritage stop</span>
+              <span className="block font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">{t('home.heritage_stop')}</span>
               <span className="block text-[18px] leading-6 font-['Stack_Sans_Headline'] font-semibold text-on-surface truncate">{getPlaceName(place)}</span>
             </span>
             <span className="material-symbols-outlined text-primary">near_me</span>

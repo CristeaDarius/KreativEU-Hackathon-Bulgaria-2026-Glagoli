@@ -1,34 +1,21 @@
 {
-  "app": {
-    "name": "CityScan"
-  },
-  "nav": {
-    "explore": "Explore",
-    "routes": "Routes",
-    "compendium": "Compendium",
-    "concierge": "Concierge"
-  },
-  "splash": {
-    "subtitle": "Svishtov Cultural Route"
-  },
+  "app": { "name": "CityScan" },
+  "nav": { "explore": "Explore", "routes": "Routes", "compendium": "Compendium", "concierge": "Concierge" },
+  "splash": { "subtitle": "Svishtov Cultural Route" },
   "login": {
     "tagline": "Discover Svishtov through stories, routes, and cultural memory.",
-    "start": "Start exploring",
+    "start": "Login",
     "guest": "Continue as guest",
-    "terms": "By continuing you agree to our terms of use."
+    "terms": "Demo login stores your app state locally on this device."
   },
   "build": {
-    "label": "AI Profile Builder",
-    "step": "Step 1 of 4",
-    "title": "Build your Svishtov day",
-    "description": "Answer a few questions and CityScan will create a cultural route around your pace, interests, and travel style.",
-    "ai_message": "Welcome to Svishtov. I'll build a route around your interests, time, and travel style. First, who are you exploring with?",
-    "who_are_you": "Who are you?",
-    "cultural_tourist": "Cultural tourist",
-    "family": "Family",
-    "visually_impaired": "Visually impaired visitor",
-    "current_profile": "Current Profile",
-    "generate": "Generate AI route"
+    "label": "AI route builder",
+    "title": "Let's shape today.",
+    "description": "Choose your constraints, then Locaia adapts the next questions from your mood.",
+    "back": "Back",
+    "next": "Next",
+    "generate": "Generate route",
+    "loading": "Choosing a city, places, list, and map route..."
   },
   "route_map": {
     "title": "Svishtov Cultural Route",
@@ -38,23 +25,138 @@
     "heritage_site": "Heritage site",
     "audio_story": "AI Audio Story",
     "accessible_mode": "Accessible Mode",
-    "next_stop": "Next stop",
+    "next_stop": "Next",
+    "prev_stop": "Previous",
     "open_stop": "Open stop",
-    "heritage_explorer": "Heritage Explorer"
+    "heritage_explorer": "Heritage Explorer",
+    "mark_visited": "Mark visited",
+    "visited": "Visited",
+    "go_there": "Go there",
+    "end_route": "End route",
+    "route_ended": "Route ended",
+    "trip_summary": "Trip summary",
+    "summary_text": "You visited {{visited}} of {{total}} stops. Saved heritage photos are available in your collection.",
+    "in_route_ai": "In-route AI",
+    "ask_stop": "Ask about this stop",
+    "thinking": "Thinking...",
+    "loading": "Building route...",
+    "empty": "No route stops are available yet.",
+    "fallback_desc": "A cultural memory point connected to Svishtov identity.",
+    "ai_error": "I could not create an answer from this stop description."
   },
   "compendium": {
-    "title": "Your Svishtov Compendium",
-    "subtitle": "Collected places, stories, and badges from your route.",
+    "title": "Your Collection",
+    "subtitle": "Heritage stories saved after taking a demo photo.",
     "route_memory": "Route Memory",
     "level": "Level 2 Historian",
-    "places": "Places",
+    "saved": "Saved",
     "badges": "Badges",
     "audio": "Audio",
     "heritage_site": "Heritage site",
     "stop": "Stop {{n}}",
     "open_story": "Open story",
-    "discover_more": "Discover More",
-    "discover_more_desc": "Continue your journey to unlock more locations."
+    "empty": "No collected stories yet. Go to a heritage stop, take a demo picture, then save it here.",
+    "discover_more": "Save More",
+    "discover_more_desc": "Take pictures at heritage stops to grow your collection."
+  },
+  "concierge": {
+    "welcome": "Choose a place and ask me about its story. I will answer only from the local description available in Locaia.",
+    "ready": "I am ready to guide you through {{place}}. What would you like to know?",
+    "thinking": "Thinking...",
+    "placeholder": "Ask about {{place}}",
+    "error_places": "The guide cannot load places right now.",
+    "error_place": "This place could not be opened.",
+    "error_ai": "The AI guide is unavailable. Check the API key or try again later.",
+    "no_places": "No places available",
+    "current_story": "Current story"
+  },
+  "home": {
+    "greeting": "Hi {{name}}! What are you up to today?",
+    "route_ready": "Your route is ready. Continue from the map whenever you want.",
+    "no_route": "Answer a few choices and Locaia will build a simple route for today.",
+    "plan_day": "Plan my day",
+    "plan_another": "Plan another day",
+    "continue_route": "Continue route",
+    "city": "City",
+    "time": "Time",
+    "visited": "Visited",
+    "not_set": "Not set",
+    "choose": "Choose",
+    "active_route": "Active route",
+    "completed_route": "Completed route",
+    "no_route_yet": "No route yet",
+    "your_stops": "Your stops",
+    "ready": "Ready when you are",
+    "map": "Map",
+    "loading": "Loading places...",
+    "error": "Places are unavailable right now. Start with the route builder or try again later.",
+    "empty": "No active route yet. Tap \"Plan my day\" to create one.",
+    "heritage_stop": "Heritage stop"
+  },
+  "settings": {
+    "label": "Preferences",
+    "title": "Settings",
+    "description": "Mobile-first options for a more comfortable cultural route.",
+    "accessible_title": "Accessible mode",
+    "accessible_desc": "Prioritize clear text, simple movement, and readable stops.",
+    "audio_title": "Audio stories",
+    "audio_desc": "Prepare narrated heritage descriptions for each stop.",
+    "language_title": "Language",
+    "language_desc": "English route content for the hackathon demo."
+  },
+  "questionnaire": {
+    "label": "Optional setup",
+    "title": "Help Locaia adapt to you.",
+    "description": "These predefined answers personalize route pace and accessibility. You can skip them.",
+    "skip": "Skip",
+    "continue": "Continue"
+  },
+  "visit": {
+    "loading": "Opening stop...",
+    "error": "This stop cannot be opened right now.",
+    "arrived": "You arrived",
+    "heritage_desc": "This looks like a heritage stop. Take a demo photo to unlock the story card.",
+    "non_heritage_desc": "This is a route stop, but not a collection heritage item.",
+    "mark_visited": "Mark as visited",
+    "marked_visited": "Marked visited",
+    "mark_no_save": "Mark visited without saving",
+    "back_route": "Back to route",
+    "demo_camera": "Demo camera",
+    "take_picture": "Take picture",
+    "unlocked": "Unlocked story",
+    "fallback_desc": "A cultural memory point connected to local identity.",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saved": "Saved",
+    "non_heritage_visit": "You can mark this place as visited. It will not be saved to your heritage collection."
+  },
+  "not_found": {
+    "title": "Route not found",
+    "description": "This screen is not part of the Locaia mobile journey.",
+    "back": "Back to Today"
+  },
+  "dashboard": {
+    "label": "Journey status",
+    "title": "Your route is ready.",
+    "description": "Open the map, continue collecting stories, or ask the guide about a stop.",
+    "stops": "Stops",
+    "badges": "Badges",
+    "audio": "Audio",
+    "route": "Route",
+    "open_map": "Open route map"
+  },
+  "topbar": {
+    "today": "Today",
+    "build": "Build Route",
+    "route_map": "Route Map",
+    "collection": "Collection",
+    "ai_guide": "AI Guide",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "questionnaire": "Questionnaire",
+    "setup": "Setup",
+    "visit": "Visit Stop",
+    "default": "Locaia"
   },
   "bottom_nav": {
     "explore": "Explore",

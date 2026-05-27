@@ -1,34 +1,21 @@
 {
-  "app": {
-    "name": "CityScan"
-  },
-  "nav": {
-    "explore": "Explorează",
-    "routes": "Rute",
-    "compendium": "Compendiu",
-    "concierge": "Concierge"
-  },
-  "splash": {
-    "subtitle": "Ruta Culturală Svishtov"
-  },
+  "app": { "name": "CityScan" },
+  "nav": { "explore": "Explorează", "routes": "Rute", "compendium": "Compendiu", "concierge": "Concierge" },
+  "splash": { "subtitle": "Ruta Culturală Svishtov" },
   "login": {
     "tagline": "Descoperă Svishtov prin povești, rute și memorie culturală.",
-    "start": "Începe explorarea",
+    "start": "Autentificare",
     "guest": "Continuă ca vizitator",
-    "terms": "Continuând, ești de acord cu termenii noștri de utilizare."
+    "terms": "Autentificarea demo stochează starea aplicației local pe acest dispozitiv."
   },
   "build": {
-    "label": "Constructor de Profil AI",
-    "step": "Pasul 1 din 4",
-    "title": "Construiește-ți ziua în Svishtov",
-    "description": "Răspunde la câteva întrebări și CityScan va crea o rută culturală adaptată ritmului și intereselor tale.",
-    "ai_message": "Bun venit în Svishtov. Voi construi o rută în funcție de interesele, timpul și stilul tău de călătorie. Mai întâi, cu cine explorezi?",
-    "who_are_you": "Cine ești?",
-    "cultural_tourist": "Turist cultural",
-    "family": "Familie",
-    "visually_impaired": "Vizitator cu deficiențe de vedere",
-    "current_profile": "Profil curent",
-    "generate": "Generează ruta AI"
+    "label": "Constructor de rută AI",
+    "title": "Să conturăm ziua de azi.",
+    "description": "Alege constrângerile tale, apoi Locaia adaptează întrebările în funcție de starea ta.",
+    "back": "Înapoi",
+    "next": "Înainte",
+    "generate": "Generează ruta",
+    "loading": "Se alege orașul, locurile, lista și ruta pe hartă..."
   },
   "route_map": {
     "title": "Ruta Culturală Svishtov",
@@ -38,23 +25,138 @@
     "heritage_site": "Sit patrimonial",
     "audio_story": "Poveste audio AI",
     "accessible_mode": "Mod accesibil",
-    "next_stop": "Oprirea următoare",
+    "next_stop": "Înainte",
+    "prev_stop": "Înapoi",
     "open_stop": "Deschide oprirea",
-    "heritage_explorer": "Explorator de patrimoniu"
+    "heritage_explorer": "Explorator de patrimoniu",
+    "mark_visited": "Marchează vizitat",
+    "visited": "Vizitat",
+    "go_there": "Mergi acolo",
+    "end_route": "Termină ruta",
+    "route_ended": "Ruta s-a terminat",
+    "trip_summary": "Rezumat călătorie",
+    "summary_text": "Ai vizitat {{visited}} din {{total}} opriri. Fotografiile patrimoniale salvate sunt disponibile în colecția ta.",
+    "in_route_ai": "AI pe rută",
+    "ask_stop": "Întreabă despre această oprire",
+    "thinking": "Se gândește...",
+    "loading": "Se construiește ruta...",
+    "empty": "Nu există opriri disponibile încă.",
+    "fallback_desc": "Un punct de memorie culturală legat de identitatea Svishtovului.",
+    "ai_error": "Nu am putut crea un răspuns din descrierea acestei opriri."
   },
   "compendium": {
-    "title": "Compendiul tău Svishtov",
-    "subtitle": "Locuri, povești și insigne colectate din ruta ta.",
+    "title": "Colecția ta",
+    "subtitle": "Povești patrimoniale salvate după o fotografie demo.",
     "route_memory": "Memoria rutei",
     "level": "Nivel 2 Istoric",
-    "places": "Locuri",
+    "saved": "Salvate",
     "badges": "Insigne",
     "audio": "Audio",
     "heritage_site": "Sit patrimonial",
     "stop": "Oprirea {{n}}",
     "open_story": "Deschide povestea",
-    "discover_more": "Descoperă mai mult",
-    "discover_more_desc": "Continuă călătoria pentru a debloca mai multe locații."
+    "empty": "Nicio poveste colectată încă. Mergi la o oprire patrimonială, fă o fotografie demo, apoi salveaz-o aici.",
+    "discover_more": "Salvează mai mult",
+    "discover_more_desc": "Fă fotografii la opriri patrimoniale pentru a-ți extinde colecția."
+  },
+  "concierge": {
+    "welcome": "Alege un loc și întreabă-mă despre povestea lui. Voi răspunde doar din descrierea locală disponibilă în Locaia.",
+    "ready": "Sunt gata să te ghidez prin {{place}}. Ce ai dori să știi?",
+    "thinking": "Se gândește...",
+    "placeholder": "Întreabă despre {{place}}",
+    "error_places": "Ghidul nu poate încărca locurile acum.",
+    "error_place": "Acest loc nu a putut fi deschis.",
+    "error_ai": "Ghidul AI este indisponibil. Verifică cheia API sau încearcă din nou.",
+    "no_places": "Niciun loc disponibil",
+    "current_story": "Povestea curentă"
+  },
+  "home": {
+    "greeting": "Salut {{name}}! Ce faci azi?",
+    "route_ready": "Ruta ta este gata. Continuă de pe hartă când vrei.",
+    "no_route": "Răspunde la câteva alegeri și Locaia va construi o rută simplă pentru azi.",
+    "plan_day": "Planifică ziua",
+    "plan_another": "Planifică altă zi",
+    "continue_route": "Continuă ruta",
+    "city": "Oraș",
+    "time": "Timp",
+    "visited": "Vizitate",
+    "not_set": "Nesetat",
+    "choose": "Alege",
+    "active_route": "Rută activă",
+    "completed_route": "Rută finalizată",
+    "no_route_yet": "Nicio rută încă",
+    "your_stops": "Opririle tale",
+    "ready": "Gata când ești",
+    "map": "Hartă",
+    "loading": "Se încarcă locurile...",
+    "error": "Locurile sunt indisponibile acum. Începe cu constructorul de rute sau încearcă din nou.",
+    "empty": "Nicio rută activă. Apasă \"Planifică ziua\" pentru a crea una.",
+    "heritage_stop": "Oprire patrimonială"
+  },
+  "settings": {
+    "label": "Preferințe",
+    "title": "Setări",
+    "description": "Opțiuni mobile-first pentru o rută culturală mai confortabilă.",
+    "accessible_title": "Mod accesibil",
+    "accessible_desc": "Prioritizează text clar, mișcare simplă și opriri lizibile.",
+    "audio_title": "Povești audio",
+    "audio_desc": "Pregătește descrieri narate ale patrimoniului pentru fiecare oprire.",
+    "language_title": "Limbă",
+    "language_desc": "Conținut în română pentru demo-ul hackathon."
+  },
+  "questionnaire": {
+    "label": "Configurare opțională",
+    "title": "Ajută Locaia să se adapteze la tine.",
+    "description": "Aceste răspunsuri predefinite personalizează ritmul și accesibilitatea rutei. Le poți sări.",
+    "skip": "Sari",
+    "continue": "Continuă"
+  },
+  "visit": {
+    "loading": "Se deschide oprirea...",
+    "error": "Această oprire nu poate fi deschisă acum.",
+    "arrived": "Ai ajuns",
+    "heritage_desc": "Aceasta pare o oprire patrimonială. Fă o fotografie demo pentru a debloca cardul poveștii.",
+    "non_heritage_desc": "Aceasta este o oprire de rută, dar nu un element patrimonial de colecție.",
+    "mark_visited": "Marchează ca vizitat",
+    "marked_visited": "Marcat vizitat",
+    "mark_no_save": "Marchează vizitat fără salvare",
+    "back_route": "Înapoi la rută",
+    "demo_camera": "Cameră demo",
+    "take_picture": "Fă o fotografie",
+    "unlocked": "Poveste deblocată",
+    "fallback_desc": "Un punct de memorie culturală legat de identitatea locală.",
+    "cancel": "Anulează",
+    "save": "Salvează",
+    "saved": "Salvat",
+    "non_heritage_visit": "Poți marca acest loc ca vizitat. Nu va fi salvat în colecția ta patrimonială."
+  },
+  "not_found": {
+    "title": "Rută negăsită",
+    "description": "Acest ecran nu face parte din călătoria mobilă Locaia.",
+    "back": "Înapoi la Azi"
+  },
+  "dashboard": {
+    "label": "Starea călătoriei",
+    "title": "Ruta ta este gata.",
+    "description": "Deschide harta, continuă să colectezi povești sau întreabă ghidul despre o oprire.",
+    "stops": "Opriri",
+    "badges": "Insigne",
+    "audio": "Audio",
+    "route": "Rută",
+    "open_map": "Deschide harta rutei"
+  },
+  "topbar": {
+    "today": "Azi",
+    "build": "Construiește ruta",
+    "route_map": "Harta rutei",
+    "collection": "Colecție",
+    "ai_guide": "Ghid AI",
+    "dashboard": "Tablou de bord",
+    "settings": "Setări",
+    "questionnaire": "Chestionar",
+    "setup": "Configurare",
+    "visit": "Vizitează oprirea",
+    "default": "Locaia"
   },
   "bottom_nav": {
     "explore": "Explorează",

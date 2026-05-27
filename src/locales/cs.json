@@ -1,34 +1,21 @@
 {
-  "app": {
-    "name": "CityScan"
-  },
-  "nav": {
-    "explore": "Prozkoumat",
-    "routes": "Trasy",
-    "compendium": "Kompendium",
-    "concierge": "Concierge"
-  },
-  "splash": {
-    "subtitle": "Kulturní trasa Svishtov"
-  },
+  "app": { "name": "CityScan" },
+  "nav": { "explore": "Prozkoumat", "routes": "Trasy", "compendium": "Kompendium", "concierge": "Concierge" },
+  "splash": { "subtitle": "Kulturní trasa Svishtov" },
   "login": {
     "tagline": "Objevte Svishtov prostřednictvím příběhů, tras a kulturní paměti.",
-    "start": "Začít prozkoumávat",
+    "start": "Přihlásit se",
     "guest": "Pokračovat jako host",
-    "terms": "Pokračováním souhlasíte s našimi podmínkami použití."
+    "terms": "Demo přihlášení ukládá stav aplikace lokálně na tomto zařízení."
   },
   "build": {
-    "label": "AI Tvůrce profilu",
-    "step": "Krok 1 ze 4",
-    "title": "Sestavte si den ve Svishtovu",
-    "description": "Odpovězte na několik otázek a CityScan vytvoří kulturní trasu podle vašeho tempa a zájmů.",
-    "ai_message": "Vítejte ve Svishtovu. Sestavím trasu podle vašich zájmů, času a stylu cestování. Nejprve, s kým prozkoumáváte?",
-    "who_are_you": "Kdo jste?",
-    "cultural_tourist": "Kulturní turista",
-    "family": "Rodina",
-    "visually_impaired": "Návštěvník se zrakovým postižením",
-    "current_profile": "Aktuální profil",
-    "generate": "Generovat AI trasu"
+    "label": "AI tvůrce trasy",
+    "title": "Pojďme formovat dnešek.",
+    "description": "Zvolte omezení a Locaia přizpůsobí otázky podle vaší nálady.",
+    "back": "Zpět",
+    "next": "Dále",
+    "generate": "Generovat trasu",
+    "loading": "Vybírá se město, místa, seznam a trasa na mapě..."
   },
   "route_map": {
     "title": "Kulturní trasa Svishtov",
@@ -38,23 +25,138 @@
     "heritage_site": "Památková lokalita",
     "audio_story": "AI audio příběh",
     "accessible_mode": "Přístupný režim",
-    "next_stop": "Další zastávka",
+    "next_stop": "Dále",
+    "prev_stop": "Zpět",
     "open_stop": "Otevřít zastávku",
-    "heritage_explorer": "Objevitel dědictví"
+    "heritage_explorer": "Objevitel dědictví",
+    "mark_visited": "Označit jako navštívené",
+    "visited": "Navštíveno",
+    "go_there": "Jít tam",
+    "end_route": "Ukončit trasu",
+    "route_ended": "Trasa skončila",
+    "trip_summary": "Shrnutí výletu",
+    "summary_text": "Navštívili jste {{visited}} z {{total}} zastávek. Uložené fotografie jsou dostupné ve vaší sbírce.",
+    "in_route_ai": "AI na trase",
+    "ask_stop": "Zeptejte se na tuto zastávku",
+    "thinking": "Přemýšlí...",
+    "loading": "Buduje se trasa...",
+    "empty": "Zatím nejsou dostupné žádné zastávky.",
+    "fallback_desc": "Bod kulturní paměti spojený s identitou Svishtova.",
+    "ai_error": "Nepodařilo se vytvořit odpověď z popisu této zastávky."
   },
   "compendium": {
-    "title": "Vaše kompendium Svishtov",
-    "subtitle": "Sebraná místa, příběhy a odznaky z vaší trasy.",
+    "title": "Vaše sbírka",
+    "subtitle": "Příběhy dědictví uložené po demo fotografii.",
     "route_memory": "Paměť trasy",
     "level": "Úroveň 2 Historik",
-    "places": "Místa",
+    "saved": "Uloženo",
     "badges": "Odznaky",
     "audio": "Audio",
     "heritage_site": "Památková lokalita",
     "stop": "Zastávka {{n}}",
     "open_story": "Otevřít příběh",
-    "discover_more": "Objevit více",
-    "discover_more_desc": "Pokračujte v cestě a odemkněte další lokality."
+    "empty": "Zatím žádné sebrané příběhy. Jděte na památkovou zastávku, udělejte demo fotografii a uložte ji zde.",
+    "discover_more": "Uložit více",
+    "discover_more_desc": "Fotografujte na památkových zastávkách a rozšiřte svou sbírku."
+  },
+  "concierge": {
+    "welcome": "Vyberte místo a zeptejte se mě na jeho příběh. Odpovím pouze z lokálního popisu dostupného v Locaia.",
+    "ready": "Jsem připraven vás provést přes {{place}}. Co byste chtěli vědět?",
+    "thinking": "Přemýšlí...",
+    "placeholder": "Zeptejte se na {{place}}",
+    "error_places": "Průvodce nemůže načíst místa právě teď.",
+    "error_place": "Toto místo se nepodařilo otevřít.",
+    "error_ai": "AI průvodce je nedostupný. Zkontrolujte API klíč nebo zkuste znovu.",
+    "no_places": "Žádná dostupná místa",
+    "current_story": "Aktuální příběh"
+  },
+  "home": {
+    "greeting": "Ahoj {{name}}! Co děláš dnes?",
+    "route_ready": "Vaše trasa je připravena. Pokračujte z mapy kdykoli chcete.",
+    "no_route": "Odpovězte na několik otázek a Locaia vytvoří jednoduchou trasu na dnes.",
+    "plan_day": "Naplánovat den",
+    "plan_another": "Naplánovat jiný den",
+    "continue_route": "Pokračovat v trase",
+    "city": "Město",
+    "time": "Čas",
+    "visited": "Navštíveno",
+    "not_set": "Nenastaveno",
+    "choose": "Vybrat",
+    "active_route": "Aktivní trasa",
+    "completed_route": "Dokončená trasa",
+    "no_route_yet": "Zatím žádná trasa",
+    "your_stops": "Vaše zastávky",
+    "ready": "Připraveno až budete",
+    "map": "Mapa",
+    "loading": "Načítají se místa...",
+    "error": "Místa jsou momentálně nedostupná. Začněte s tvůrcem tras nebo zkuste znovu.",
+    "empty": "Zatím žádná aktivní trasa. Klepněte na \"Naplánovat den\" pro vytvoření.",
+    "heritage_stop": "Památková zastávka"
+  },
+  "settings": {
+    "label": "Předvolby",
+    "title": "Nastavení",
+    "description": "Možnosti pro pohodlnější kulturní trasu.",
+    "accessible_title": "Přístupný režim",
+    "accessible_desc": "Upřednostnit jasný text, jednoduché pohyby a čitelné zastávky.",
+    "audio_title": "Audio příběhy",
+    "audio_desc": "Připravit vyprávěné popisy dědictví pro každou zastávku.",
+    "language_title": "Jazyk",
+    "language_desc": "Obsah trasy v češtině pro demo hackathonu."
+  },
+  "questionnaire": {
+    "label": "Volitelné nastavení",
+    "title": "Pomozte Locaia přizpůsobit se vám.",
+    "description": "Tyto předdefinované odpovědi personalizují tempo a přístupnost trasy. Můžete je přeskočit.",
+    "skip": "Přeskočit",
+    "continue": "Pokračovat"
+  },
+  "visit": {
+    "loading": "Otevírá se zastávka...",
+    "error": "Tuto zastávku nelze momentálně otevřít.",
+    "arrived": "Přijeli jste",
+    "heritage_desc": "Vypadá to jako památková zastávka. Udělejte demo fotografii pro odemčení příběhové karty.",
+    "non_heritage_desc": "Toto je zastávka trasy, ale ne památková položka sbírky.",
+    "mark_visited": "Označit jako navštívené",
+    "marked_visited": "Označeno jako navštívené",
+    "mark_no_save": "Označit navštívené bez uložení",
+    "back_route": "Zpět na trasu",
+    "demo_camera": "Demo kamera",
+    "take_picture": "Vyfotit",
+    "unlocked": "Odemčený příběh",
+    "fallback_desc": "Bod kulturní paměti spojený s místní identitou.",
+    "cancel": "Zrušit",
+    "save": "Uložit",
+    "saved": "Uloženo",
+    "non_heritage_visit": "Můžete označit toto místo jako navštívené. Nebude uloženo do vaší památkové sbírky."
+  },
+  "not_found": {
+    "title": "Trasa nenalezena",
+    "description": "Tato obrazovka není součástí mobilní cesty Locaia.",
+    "back": "Zpět na Dnes"
+  },
+  "dashboard": {
+    "label": "Stav cesty",
+    "title": "Vaše trasa je připravena.",
+    "description": "Otevřete mapu, pokračujte ve sbírání příběhů nebo se zeptejte průvodce na zastávku.",
+    "stops": "Zastávky",
+    "badges": "Odznaky",
+    "audio": "Audio",
+    "route": "Trasa",
+    "open_map": "Otevřít mapu trasy"
+  },
+  "topbar": {
+    "today": "Dnes",
+    "build": "Vytvořit trasu",
+    "route_map": "Mapa trasy",
+    "collection": "Sbírka",
+    "ai_guide": "AI průvodce",
+    "dashboard": "Přehled",
+    "settings": "Nastavení",
+    "questionnaire": "Dotazník",
+    "setup": "Nastavení",
+    "visit": "Navštívit zastávku",
+    "default": "Locaia"
   },
   "bottom_nav": {
     "explore": "Prozkoumat",

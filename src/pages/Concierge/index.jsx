@@ -1,18 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { fetchPlace, fetchPlaces, getPlaceName } from '../../lib/api';
-
-const welcomeMessage = {
-  role: 'assistant',
-  content: 'Choose a place and ask me about its story. I will answer only from the local description available in Locaia.',
-};
 
 const Concierge = () => {
   const { state } = useLocation();
+  const { t } = useTranslation();
   const [places, setPlaces] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([welcomeMessage]);
+  const [messages, setMessages] = useState([]);
   const [loadingPlaces, setLoadingPlaces] = useState(false);
   const [loadingPlace, setLoadingPlace] = useState(false);
   const [loadingReply, setLoadingReply] = useState(false);
@@ -27,7 +24,7 @@ const Concierge = () => {
         const preferred = state?.placeId || data[0]?.id;
         if (preferred) loadPlace(preferred);
       })
-      .catch(() => setError('The guide cannot load places right now.'))
+      .catch(() => setError(t('concierge.error_places')))
       .finally(() => setLoadingPlaces(false));
   }, [state?.placeId]);
 
@@ -42,11 +39,11 @@ const Concierge = () => {
       const data = await fetchPlace(id);
       setSelectedPlace(data);
       setMessages([
-        welcomeMessage,
-        { role: 'assistant', content: `I am ready to guide you through ${getPlaceName(data)}. What would you like to know?` },
+        { role: 'assistant', content: t('concierge.welcome') },
+        { role: 'assistant', content: t('concierge.ready', { place: getPlaceName(data) }) },
       ]);
     } catch {
-      setError('This place could not be opened.');
+      setError(t('concierge.error_place'));
     } finally {
       setLoadingPlace(false);
     }
@@ -85,9 +82,9 @@ const Concierge = () => {
       if (!res.ok) throw new Error('Unable to contact guide');
       const data = await res.json();
       const reply = data.choices?.[0]?.message;
-      setMessages(reply ? [...updatedMessages, reply] : [...updatedMessages, { role: 'assistant', content: 'I could not create an answer from the available description.' }]);
+      setMessages(reply ? [...updatedMessages, reply] : [...updatedMessages, { role: 'assistant', content: t('route_map.ai_error') }]);
     } catch {
-      setError('The AI guide is unavailable. Check the API key or try again later.');
+      setError(t('concierge.error_ai'));
     } finally {
       setLoadingReply(false);
     }
@@ -103,8 +100,8 @@ const Concierge = () => {
   return (
     <div className="min-h-full flex flex-col px-5 pt-4 gap-4">
       <section className="flex gap-2 overflow-x-auto pb-1 custom-scrollbar -mx-5 px-5">
-        {loadingPlaces && <span className="rounded-full bg-surface-container px-4 py-2 font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant">Loading...</span>}
-        {!loadingPlaces && places.length === 0 && <span className="rounded-full bg-surface-container px-4 py-2 font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant">No places available</span>}
+        {loadingPlaces && <span className="rounded-full bg-surface-container px-4 py-2 font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant">{t('home.loading')}</span>}
+        {!loadingPlaces && places.length === 0 && <span className="rounded-full bg-surface-container px-4 py-2 font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant">{t('concierge.no_places')}</span>}
         {places.map(place => {
           const active = selectedPlace?.id?.toLowerCase() === place.id.toLowerCase();
           return (
@@ -123,7 +120,7 @@ const Concierge = () => {
 
       {selectedPlace && (
         <section className="rounded-[24px] bg-surface-container-lowest border border-outline-variant p-4 shadow-sm">
-          <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">Current story</span>
+          <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">{t('concierge.current_story')}</span>
           <h1 className="text-[22px] leading-7 font-['Stack_Sans_Headline'] font-semibold text-primary mt-1">{getPlaceName(selectedPlace)}</h1>
         </section>
       )}
@@ -143,7 +140,7 @@ const Concierge = () => {
         })}
         {loadingReply && (
           <div className="flex justify-start">
-            <div className="rounded-[22px] rounded-bl-md bg-surface-container-lowest border border-outline-variant px-4 py-3 text-on-surface-variant">Thinking...</div>
+            <div className="rounded-[22px] rounded-bl-md bg-surface-container-lowest border border-outline-variant px-4 py-3 text-on-surface-variant">{t('concierge.thinking')}</div>
           </div>
         )}
         <div ref={messagesEndRef} />
@@ -155,7 +152,7 @@ const Concierge = () => {
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={selectedPlace ? `Ask about ${getPlaceName(selectedPlace)}` : 'Select a place first'}
+            placeholder={selectedPlace ? t('concierge.placeholder', { place: getPlaceName(selectedPlace) }) : t('concierge.no_places')}
             rows={1}
             className="app-textarea flex-1 resize-none outline-none px-3 py-3 text-[15px] max-h-28"
           />
