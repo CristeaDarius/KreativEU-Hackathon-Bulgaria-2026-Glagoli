@@ -10,10 +10,10 @@ const NotFound = () => {
         <span className="material-symbols-outlined text-[42px]">wrong_location</span>
       </div>
       <div>
-        <h1 className="text-[30px] leading-9 font-['Montserrat'] font-bold text-primary">Route not found</h1>
-        <p className="text-on-surface-variant mt-2 leading-6">This screen is not part of the CityScan mobile journey.</p>
+        <h1 className="text-[30px] leading-9 font-['Stack_Sans_Headline'] font-bold text-primary">Route not found</h1>
+        <p className="text-on-surface-variant mt-2 leading-6">This screen is not part of the Locaia mobile journey.</p>
       </div>
-      <button type="button" onClick={() => navigate('/explore')} className="w-full bg-primary text-on-primary rounded-2xl py-4 font-['IBM_Plex_Mono'] text-[14px] font-bold active:scale-[0.98] transition-transform">Back to Explore</button>
+      <button type="button" onClick={() => navigate('/today')} className="w-full bg-primary text-on-primary rounded-2xl py-4 font-['IBM_Plex_Mono'] text-[14px] font-bold active:scale-[0.98] transition-transform">Back to Today</button>
     </div>
   );
 };

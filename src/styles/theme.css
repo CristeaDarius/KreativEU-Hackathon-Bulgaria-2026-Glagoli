@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=IBM+Plex+Mono:wght@500&family=Manrope:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@400;600;700&family=IBM+Plex+Mono:wght@500&family=Manrope:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
 body {
-  background-color: #FAF6ED;
+  background-color: #F6F1E8;
   min-height: 100dvh;
   margin: 0;
   overscroll-behavior: none;
@@ -36,7 +36,7 @@ button {
 
 .custom-scrollbar::-webkit-scrollbar { width: 4px; }
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c8ca; border-radius: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #c6d0ca; border-radius: 4px; }
 
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .pb-safe { padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); }

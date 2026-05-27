@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { fetchPlace, fetchPlaces, getPlaceName } from '../../lib/api';
 
 const welcomeMessage = {
   role: 'assistant',
-  content: 'Choose a place and ask me about its story. I will answer only from the local description available in CityScan.',
+  content: 'Choose a place and ask me about its story. I will answer only from the local description available in Locaia.',
 };
 
 const Concierge = () => {
@@ -13,21 +14,17 @@ const Concierge = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([welcomeMessage]);
   const [loadingPlaces, setLoadingPlaces] = useState(false);
+  const [loadingPlace, setLoadingPlace] = useState(false);
   const [loadingReply, setLoadingReply] = useState(false);
   const [error, setError] = useState('');
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
     setLoadingPlaces(true);
-    fetch('/api/places')
-      .then(r => {
-        if (!r.ok) throw new Error('Unable to load places');
-        return r.json();
-      })
+    fetchPlaces()
       .then(data => {
-        const validPlaces = data.filter(place => place.id);
-        setPlaces(validPlaces);
-        const preferred = state?.placeId || validPlaces[0]?.id;
+        setPlaces(data);
+        const preferred = state?.placeId || data[0]?.id;
         if (preferred) loadPlace(preferred);
       })
       .catch(() => setError('The guide cannot load places right now.'))
@@ -40,17 +37,18 @@ const Concierge = () => {
 
   const loadPlace = async (id) => {
     setError('');
+    setLoadingPlace(true);
     try {
-      const res = await fetch(`/api/places/${id}`);
-      if (!res.ok) throw new Error('Unable to load place');
-      const data = await res.json();
+      const data = await fetchPlace(id);
       setSelectedPlace(data);
       setMessages([
         welcomeMessage,
-        { role: 'assistant', content: `I am ready to guide you through ${data.name || data.id}. What would you like to know?` },
+        { role: 'assistant', content: `I am ready to guide you through ${getPlaceName(data)}. What would you like to know?` },
       ]);
     } catch {
       setError('This place could not be opened.');
+    } finally {
+      setLoadingPlace(false);
     }
   };
 
@@ -59,7 +57,7 @@ const Concierge = () => {
 
     const systemMessage = {
       role: 'system',
-      content: `You are a guide for "${selectedPlace.name}". You may ONLY answer using the information in the description below. Do not use any outside knowledge, do not make assumptions, and do not invent details. If the answer is not in the description, say "I don't have that information."\n\nDescription:\n${selectedPlace.description || selectedPlace.additional_info || ''}`,
+      content: `You are a guide for "${getPlaceName(selectedPlace)}". You may ONLY answer using the information in the description below. Do not use any outside knowledge, do not make assumptions, and do not invent details. If the answer is not in the description, say "I don't have that information."\n\nDescription:\n${selectedPlace.description || selectedPlace.additional_info || ''}`,
     };
 
     const userMessage = { role: 'user', content: input.trim() };
@@ -70,6 +68,8 @@ const Concierge = () => {
     setError('');
 
     try {
+      if (!import.meta.env.VITE_MISTRAL_API_KEY) throw new Error('Missing Mistral API key');
+
       const res = await fetch('https://api.mistral.ai/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -104,6 +104,7 @@ const Concierge = () => {
     <div className="min-h-full flex flex-col px-5 pt-4 gap-4">
       <section className="flex gap-2 overflow-x-auto pb-1 custom-scrollbar -mx-5 px-5">
         {loadingPlaces && <span className="rounded-full bg-surface-container px-4 py-2 font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant">Loading...</span>}
+        {!loadingPlaces && places.length === 0 && <span className="rounded-full bg-surface-container px-4 py-2 font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant">No places available</span>}
         {places.map(place => {
           const active = selectedPlace?.id?.toLowerCase() === place.id.toLowerCase();
           return (
@@ -111,9 +112,10 @@ const Concierge = () => {
               type="button"
               key={place.id}
               onClick={() => loadPlace(place.id)}
+              disabled={loadingPlace}
               className={`shrink-0 rounded-full border px-4 py-2 font-['IBM_Plex_Mono'] text-[12px] transition-colors ${active ? 'bg-primary text-on-primary border-primary' : 'bg-surface-container-lowest text-on-surface-variant border-outline-variant'}`}
             >
-              {place.name || place.id}
+              {getPlaceName(place)}
             </button>
           );
         })}
@@ -122,7 +124,7 @@ const Concierge = () => {
       {selectedPlace && (
         <section className="rounded-[24px] bg-surface-container-lowest border border-outline-variant p-4 shadow-sm">
           <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">Current story</span>
-          <h1 className="text-[22px] leading-7 font-['Montserrat'] font-semibold text-primary mt-1">{selectedPlace.name || selectedPlace.id}</h1>
+          <h1 className="text-[22px] leading-7 font-['Stack_Sans_Headline'] font-semibold text-primary mt-1">{getPlaceName(selectedPlace)}</h1>
         </section>
       )}
 
@@ -147,13 +149,13 @@ const Concierge = () => {
         <div ref={messagesEndRef} />
       </section>
 
-      <section className="sticky bottom-[86px] -mx-5 px-5 pt-3 pb-4 bg-background/95 backdrop-blur border-t border-outline-variant">
+      <section className="sticky bottom-0 -mx-5 px-5 pt-3 pb-4 bg-background/95 backdrop-blur border-t border-outline-variant">
         <div className="flex items-end gap-2 bg-surface-container-lowest border border-outline-variant rounded-[24px] p-2 shadow-sm">
           <textarea
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={selectedPlace ? `Ask about ${selectedPlace.name || selectedPlace.id}` : 'Select a place first'}
+            placeholder={selectedPlace ? `Ask about ${getPlaceName(selectedPlace)}` : 'Select a place first'}
             rows={1}
             className="flex-1 resize-none bg-transparent outline-none px-3 py-3 text-[15px] max-h-28"
           />

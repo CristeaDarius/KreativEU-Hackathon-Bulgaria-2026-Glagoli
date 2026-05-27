@@ -5,7 +5,7 @@ const Settings = () => {
     <div className="px-5 pt-5 flex flex-col gap-5">
       <section>
         <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">Preferences</span>
-        <h1 className="text-[30px] leading-9 font-['Montserrat'] font-bold text-primary mt-1">Settings</h1>
+        <h1 className="text-[30px] leading-9 font-['Stack_Sans_Headline'] font-bold text-primary mt-1">Settings</h1>
         <p className="text-on-surface-variant mt-2 leading-6">Mobile-first options for a more comfortable cultural route.</p>
       </section>
       {[
@@ -18,7 +18,7 @@ const Settings = () => {
             <span className="material-symbols-outlined">{item.icon}</span>
           </span>
           <span>
-            <span className="block text-[18px] font-['Montserrat'] font-semibold text-on-surface">{item.title}</span>
+            <span className="block text-[18px] font-['Stack_Sans_Headline'] font-semibold text-on-surface">{item.title}</span>
             <span className="block text-[14px] leading-5 text-on-surface-variant mt-1">{item.text}</span>
           </span>
         </article>

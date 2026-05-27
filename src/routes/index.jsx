@@ -13,6 +13,7 @@ import Dashboard from '../pages/Dashboard';
 import Settings from '../pages/Settings';
 import Questionnaire from '../pages/Questionnaire';
 import NotFound from '../pages/NotFound';
+import VisitPlace from '../pages/VisitPlace';
 
 const router = createBrowserRouter([
   {
@@ -20,12 +21,14 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <Splash /> },
       { path: '/login', element: <Login /> },
+      { path: '/setup', element: <Questionnaire /> },
     ],
   },
   {
     element: <MainLayout />,
     children: [
       { path: '/explore', element: <Home /> },
+      { path: '/today', element: <Home /> },
       { path: '/build', element: <BuildYourDay /> },
       { path: '/route-map', element: <RouteMap /> },
       { path: '/compendium', element: <Compendium /> },
@@ -33,6 +36,7 @@ const router = createBrowserRouter([
       { path: '/dashboard', element: <Dashboard /> },
       { path: '/settings', element: <Settings /> },
       { path: '/questionnaire', element: <Questionnaire /> },
+      { path: '/visit/:placeId', element: <VisitPlace /> },
       { path: '*', element: <NotFound /> },
     ],
   },

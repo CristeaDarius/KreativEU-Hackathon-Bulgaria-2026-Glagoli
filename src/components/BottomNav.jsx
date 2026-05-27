@@ -2,10 +2,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const tabs = [
-  { label: 'Explore', icon: 'explore', path: '/explore' },
-  { label: 'Routes', icon: 'route', path: '/route-map' },
-  { label: 'Compendium', icon: 'auto_stories', path: '/compendium' },
-  { label: 'Concierge', icon: 'settings_accessibility', path: '/concierge' },
+  { label: 'Today', icon: 'waving_hand', path: '/today' },
+  { label: 'Route', icon: 'route', path: '/route-map' },
+  { label: 'Collection', icon: 'collections_bookmark', path: '/compendium' },
+  { label: 'Guide', icon: 'forum', path: '/concierge' },
 ];
 
 const BottomNav = () => {
