@@ -1,0 +1,65 @@
+{
+  "app": {
+    "name": "CityScan"
+  },
+  "nav": {
+    "explore": "Explore",
+    "routes": "Routes",
+    "compendium": "Compendium",
+    "concierge": "Concierge"
+  },
+  "splash": {
+    "subtitle": "Svishtov Cultural Route"
+  },
+  "login": {
+    "tagline": "Discover Svishtov through stories, routes, and cultural memory.",
+    "start": "Start exploring",
+    "guest": "Continue as guest",
+    "terms": "By continuing you agree to our terms of use."
+  },
+  "build": {
+    "label": "AI Profile Builder",
+    "step": "Step 1 of 4",
+    "title": "Build your Svishtov day",
+    "description": "Answer a few questions and CityScan will create a cultural route around your pace, interests, and travel style.",
+    "ai_message": "Welcome to Svishtov. I'll build a route around your interests, time, and travel style. First, who are you exploring with?",
+    "who_are_you": "Who are you?",
+    "cultural_tourist": "Cultural tourist",
+    "family": "Family",
+    "visually_impaired": "Visually impaired visitor",
+    "current_profile": "Current Profile",
+    "generate": "Generate AI route"
+  },
+  "route_map": {
+    "title": "Svishtov Cultural Route",
+    "subtitle": "AI-built route · Half day · {{count}} stops",
+    "current_stop": "Current Stop",
+    "stop_of": "Stop {{current}} of {{total}}",
+    "heritage_site": "Heritage site",
+    "audio_story": "AI Audio Story",
+    "accessible_mode": "Accessible Mode",
+    "next_stop": "Next stop",
+    "open_stop": "Open stop",
+    "heritage_explorer": "Heritage Explorer"
+  },
+  "compendium": {
+    "title": "Your Svishtov Compendium",
+    "subtitle": "Collected places, stories, and badges from your route.",
+    "route_memory": "Route Memory",
+    "level": "Level 2 Historian",
+    "places": "Places",
+    "badges": "Badges",
+    "audio": "Audio",
+    "heritage_site": "Heritage site",
+    "stop": "Stop {{n}}",
+    "open_story": "Open story",
+    "discover_more": "Discover More",
+    "discover_more_desc": "Continue your journey to unlock more locations."
+  },
+  "bottom_nav": {
+    "explore": "Explore",
+    "routes": "Routes",
+    "compendium": "Compendium",
+    "concierge": "Concierge"
+  }
+}

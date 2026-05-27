@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useTranslation } from 'react-i18next';
 import BottomNav from '../../components/BottomNav';
 
 // Fix default marker icons broken by Vite
@@ -18,6 +19,7 @@ const PINS = [
 
 const RouteMap = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const [places, setPlaces] = useState([]);
@@ -76,10 +78,10 @@ const RouteMap = () => {
         {/* Route info overlay */}
         <div className="absolute top-4 left-4 right-4 md:left-10 md:right-auto md:w-96 z-10 pointer-events-none">
           <div className="bg-surface/90 backdrop-blur-sm border border-outline-variant rounded-xl p-4 shadow-[0_4px_24px_rgba(0,38,46,0.06)]">
-            <h2 className="text-[22px] font-['Montserrat'] font-semibold text-primary mb-1">Svishtov Cultural Route</h2>
+            <h2 className="text-[22px] font-['Montserrat'] font-semibold text-primary mb-1">{t('route_map.title')}</h2>
             <div className="flex items-center gap-2 text-on-surface-variant font-['IBM_Plex_Mono'] text-[13px]">
               <span className="material-symbols-outlined text-[15px]">auto_awesome</span>
-              <span>AI-built route · Half day · {places.length} stops</span>
+              <span>{t('route_map.subtitle', { count: places.length })}</span>
             </div>
           </div>
         </div>
@@ -93,9 +95,11 @@ const RouteMap = () => {
 
             <div className="px-6 pt-3 pb-3 border-b border-outline-variant shrink-0">
               <div className="flex justify-between items-center mb-2">
-                <span className="font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant uppercase">Current Stop</span>
+                <span className="font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant uppercase">{t('route_map.current_stop')}</span>
                 <div className="flex items-center gap-2">
-                  <span className="font-['IBM_Plex_Mono'] text-[12px] text-primary">Stop {activeIdx + 1} of {places.length}</span>
+                  <span className="font-['IBM_Plex_Mono'] text-[12px] text-primary">
+                    {t('route_map.stop_of', { current: activeIdx + 1, total: places.length })}
+                  </span>
                   <div className="w-24 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
                     <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${((activeIdx + 1) / places.length) * 100}%` }} />
                   </div>
@@ -105,13 +109,13 @@ const RouteMap = () => {
                 {activeIdx + 1}. {active.name || active.id}
               </h3>
               <div className="flex flex-wrap items-center gap-3 font-['IBM_Plex_Mono'] text-[13px] text-on-surface-variant">
-                <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">museum</span> Heritage site</span>
+                <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">museum</span> {t('route_map.heritage_site')}</span>
                 <span>·</span>
                 <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">schedule</span> 35 min</span>
                 <span>·</span>
                 <span className="inline-flex items-center gap-1 bg-[#ffb68e]/20 text-[#73350a] px-2 py-0.5 rounded-sm border border-[#ffb68e]/50">
                   <span className="material-symbols-outlined text-[13px]" style={{ fontVariationSettings: "'FILL' 1" }}>military_tech</span>
-                  Heritage Explorer
+                  {t('route_map.heritage_explorer')}
                 </span>
               </div>
             </div>
@@ -123,11 +127,11 @@ const RouteMap = () => {
               <div className="grid grid-cols-2 gap-3">
                 <button className="flex flex-col items-center justify-center gap-2 p-3 bg-surface-container-lowest border border-outline-variant rounded-xl hover:bg-surface-container-low transition-colors shadow-sm">
                   <span className="material-symbols-outlined text-primary text-[28px]">headphones</span>
-                  <span className="font-['IBM_Plex_Mono'] text-[12px] text-center">AI Audio Story</span>
+                  <span className="font-['IBM_Plex_Mono'] text-[12px] text-center">{t('route_map.audio_story')}</span>
                 </button>
                 <button className="flex flex-col items-center justify-center gap-2 p-3 bg-surface-container-lowest border border-outline-variant rounded-xl hover:bg-surface-container-low transition-colors shadow-sm">
                   <span className="material-symbols-outlined text-primary text-[28px]">accessible_forward</span>
-                  <span className="font-['IBM_Plex_Mono'] text-[12px] text-center">Accessible Mode</span>
+                  <span className="font-['IBM_Plex_Mono'] text-[12px] text-center">{t('route_map.accessible_mode')}</span>
                 </button>
               </div>
             </div>
@@ -137,13 +141,13 @@ const RouteMap = () => {
                 onClick={() => setActiveIdx(i => Math.min(i + 1, places.length - 1))}
                 className="flex-1 bg-surface border border-outline-variant border-b-2 border-b-[#cec6b3] text-on-surface py-3 rounded-lg font-['IBM_Plex_Mono'] text-[13px] hover:bg-surface-container-high transition-colors"
               >
-                Next stop
+                {t('route_map.next_stop')}
               </button>
               <button
                 onClick={() => navigate('/compendium')}
                 className="flex-[2] bg-primary border-b-2 border-b-[#123c46] text-on-primary py-3 rounded-lg font-['IBM_Plex_Mono'] text-[13px] flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
               >
-                Open stop <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                {t('route_map.open_stop')} <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </button>
             </div>
           </div>

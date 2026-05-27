@@ -11,6 +11,7 @@ import Compendium from '../pages/Compendium';
 import Dashboard from '../pages/Dashboard';
 import Settings from '../pages/Settings';
 import Questionnaire from '../pages/Questionnaire';
+import ChangeLanguage from '../pages/ChangeLanguage';
 import NotFound from '../pages/NotFound';
 
 const router = createBrowserRouter([
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: '/dashboard', element: <Dashboard /> },
       { path: '/settings', element: <Settings /> },
       { path: '/questionnaire', element: <Questionnaire /> },
+      { path: '/change-language/:lang', element: <ChangeLanguage /> },
       { path: '*', element: <NotFound /> },
     ],
   },

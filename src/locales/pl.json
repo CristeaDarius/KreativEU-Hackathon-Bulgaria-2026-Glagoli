@@ -1,0 +1,65 @@
+{
+  "app": {
+    "name": "CityScan"
+  },
+  "nav": {
+    "explore": "Odkryj",
+    "routes": "Trasy",
+    "compendium": "Kompendium",
+    "concierge": "Concierge"
+  },
+  "splash": {
+    "subtitle": "Kulturowy Szlak Svishtov"
+  },
+  "login": {
+    "tagline": "Odkryj Svishtov przez opowieści, trasy i kulturową pamięć.",
+    "start": "Zacznij odkrywać",
+    "guest": "Kontynuuj jako gość",
+    "terms": "Kontynuując, zgadzasz się z naszymi warunkami użytkowania."
+  },
+  "build": {
+    "label": "Kreator profilu AI",
+    "step": "Krok 1 z 4",
+    "title": "Zaplanuj swój dzień w Svishtovie",
+    "description": "Odpowiedz na kilka pytań, a CityScan stworzy trasę kulturową dopasowaną do twojego tempa i zainteresowań.",
+    "ai_message": "Witaj w Svishtovie. Stworzę trasę dopasowaną do twoich zainteresowań, czasu i stylu podróżowania. Najpierw, z kim odkrywasz?",
+    "who_are_you": "Kim jesteś?",
+    "cultural_tourist": "Turysta kulturowy",
+    "family": "Rodzina",
+    "visually_impaired": "Odwiedzający z dysfunkcją wzroku",
+    "current_profile": "Aktualny profil",
+    "generate": "Generuj trasę AI"
+  },
+  "route_map": {
+    "title": "Kulturowy Szlak Svishtov",
+    "subtitle": "Trasa AI · Pół dnia · {{count}} przystanków",
+    "current_stop": "Aktualny przystanek",
+    "stop_of": "Przystanek {{current}} z {{total}}",
+    "heritage_site": "Obiekt dziedzictwa",
+    "audio_story": "Historia audio AI",
+    "accessible_mode": "Tryb dostępności",
+    "next_stop": "Następny przystanek",
+    "open_stop": "Otwórz przystanek",
+    "heritage_explorer": "Odkrywca dziedzictwa"
+  },
+  "compendium": {
+    "title": "Twoje kompendium Svishtov",
+    "subtitle": "Zebrane miejsca, opowieści i odznaki z twojej trasy.",
+    "route_memory": "Pamięć trasy",
+    "level": "Poziom 2 Historyk",
+    "places": "Miejsca",
+    "badges": "Odznaki",
+    "audio": "Audio",
+    "heritage_site": "Obiekt dziedzictwa",
+    "stop": "Przystanek {{n}}",
+    "open_story": "Otwórz historię",
+    "discover_more": "Odkryj więcej",
+    "discover_more_desc": "Kontynuuj podróż, aby odblokować więcej lokalizacji."
+  },
+  "bottom_nav": {
+    "explore": "Odkryj",
+    "routes": "Trasy",
+    "compendium": "Kompendium",
+    "concierge": "Concierge"
+  }
+}
