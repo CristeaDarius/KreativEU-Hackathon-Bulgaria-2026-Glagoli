@@ -39,7 +39,7 @@ const VisitPlace = () => {
   };
 
   return (
-    <div className="px-5 pt-5 flex flex-col gap-5">
+    <div className="px-5 pt-5 pb-8 flex flex-col gap-5">
       {loading && <div className="rounded-2xl bg-surface-container p-5 text-on-surface-variant">Opening stop...</div>}
       {error && <div className="rounded-2xl bg-error-container p-5 text-on-error-container">{error}</div>}
 
@@ -59,6 +59,7 @@ const VisitPlace = () => {
               <button type="button" onClick={handleVisited} className="bg-primary text-on-primary py-4 rounded-2xl font-['IBM_Plex_Mono'] text-[14px] font-bold active:scale-[0.98] transition-transform">
                 {visited ? 'Marked visited' : 'Mark as visited'}
               </button>
+              <button type="button" onClick={() => navigate('/route-map')} className="bg-surface border border-outline-variant text-on-surface py-4 rounded-2xl font-['IBM_Plex_Mono'] text-[14px] font-bold active:scale-[0.98] transition-transform">Back to route</button>
             </section>
           )}
 
@@ -81,10 +82,13 @@ const VisitPlace = () => {
               <p className="text-on-surface leading-6">{place.description || place.additional_info || 'A cultural memory point connected to local identity.'}</p>
               <div className="grid grid-cols-2 gap-3">
                 <button type="button" onClick={() => navigate('/route-map')} className="bg-surface border border-outline-variant text-on-surface py-4 rounded-2xl font-['IBM_Plex_Mono'] text-[13px] font-bold active:scale-[0.98] transition-transform">Cancel</button>
-                <button type="button" onClick={handleSave} className="bg-secondary text-on-secondary py-4 rounded-2xl font-['IBM_Plex_Mono'] text-[13px] font-bold active:scale-[0.98] transition-transform">
+              <button type="button" onClick={handleSave} className="bg-secondary text-on-secondary py-4 rounded-2xl font-['IBM_Plex_Mono'] text-[13px] font-bold active:scale-[0.98] transition-transform">
                   {saved ? 'Saved' : 'Save'}
                 </button>
               </div>
+              {saved && (
+                <button type="button" onClick={() => navigate('/route-map')} className="bg-primary text-on-primary py-4 rounded-2xl font-['IBM_Plex_Mono'] text-[13px] font-bold active:scale-[0.98] transition-transform">Back to route</button>
+              )}
             </section>
           )}
         </>

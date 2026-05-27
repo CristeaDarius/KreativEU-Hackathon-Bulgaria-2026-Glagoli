@@ -28,9 +28,14 @@ const Home = () => {
     : places.slice(0, 4);
 
   const greetingName = profile?.gender && profile.gender !== 'Prefer not to say' ? 'there' : 'there';
+  const hasRoute = Boolean(plan?.placeIds?.length);
+  const routeEnded = Boolean(plan?.endedAt);
+  const primaryAction = !hasRoute || routeEnded
+    ? { label: routeEnded ? 'Plan another day' : "Plan my day", path: '/build', icon: 'auto_awesome' }
+    : { label: 'Continue route', path: '/route-map', icon: 'route' };
 
   return (
-    <div className="px-5 pt-5 flex flex-col gap-6">
+    <div className="px-5 pt-5 pb-8 flex flex-col gap-6">
       <section className="relative overflow-hidden rounded-[28px] bg-primary text-on-primary p-6 min-h-[238px] flex flex-col justify-between shadow-[0_12px_36px_rgba(0,38,46,0.16)]">
         <div className="absolute -right-12 -top-12 w-40 h-40 rounded-full bg-primary-fixed/20" />
         <div className="absolute right-6 bottom-5 stamp-shape w-16 h-16 bg-secondary flex items-center justify-center rotate-6">
@@ -39,14 +44,16 @@ const Home = () => {
         <div className="relative z-10 flex flex-col gap-3 max-w-[260px]">
           <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-[0.18em] text-primary-fixed-dim">Today</span>
           <h1 className="text-[34px] leading-[38px] font-['Stack_Sans_Headline'] font-bold tracking-tight">Hi {greetingName}! What are you up to today?</h1>
-          <p className="text-[15px] leading-6 text-primary-fixed-dim">Answer a few app-style choices and Locaia will build the route, list, and map.</p>
+          <p className="text-[15px] leading-6 text-primary-fixed-dim">
+            {hasRoute && !routeEnded ? 'Your route is ready. Continue from the map whenever you want.' : 'Answer a few choices and Locaia will build a simple route for today.'}
+          </p>
         </div>
         <button
           type="button"
-          onClick={() => navigate('/build')}
+          onClick={() => navigate(primaryAction.path)}
           className="relative z-10 mt-6 w-full bg-primary-fixed text-on-primary-fixed py-4 rounded-2xl font-['IBM_Plex_Mono'] text-[14px] font-bold tracking-wide flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
         >
-          Start today's plan <span className="material-symbols-outlined text-[19px]">arrow_forward</span>
+          {primaryAction.label} <span className="material-symbols-outlined text-[19px]">{primaryAction.icon}</span>
         </button>
       </section>
 
@@ -66,20 +73,20 @@ const Home = () => {
       <section className="flex flex-col gap-3">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">{plan ? 'Generated plan' : 'Preview stops'}</span>
-            <h2 className="text-[24px] font-['Stack_Sans_Headline'] font-semibold text-primary">{plan ? 'Your route list' : 'Places Locaia may use'}</h2>
+            <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">{hasRoute ? routeEnded ? 'Completed route' : 'Active route' : 'No route yet'}</span>
+            <h2 className="text-[24px] font-['Stack_Sans_Headline'] font-semibold text-primary">{hasRoute ? 'Your stops' : 'Ready when you are'}</h2>
           </div>
-          <button type="button" onClick={() => navigate('/route-map')} className="text-primary font-['IBM_Plex_Mono'] text-[12px] font-bold">Map</button>
+          {hasRoute && <button type="button" onClick={() => navigate('/route-map')} className="text-primary font-['IBM_Plex_Mono'] text-[12px] font-bold">Map</button>}
         </div>
 
         {loading && <div className="rounded-2xl bg-surface-container p-5 text-on-surface-variant">Loading places...</div>}
         {error && <div className="rounded-2xl bg-error-container p-5 text-on-error-container">{error}</div>}
 
-        {!loading && !error && routePlaces.length === 0 && (
-          <div className="rounded-2xl bg-surface-container p-5 text-on-surface-variant leading-6">No route stops are available yet.</div>
+        {!loading && !error && !hasRoute && (
+          <div className="rounded-2xl bg-surface-container p-5 text-on-surface-variant leading-6">No active route yet. Tap “Plan my day” to create one.</div>
         )}
 
-        {!loading && !error && routePlaces.map((place, index) => (
+        {!loading && !error && hasRoute && routePlaces.map((place, index) => (
           <button
             type="button"
             key={place.id}

@@ -23,6 +23,10 @@ export const getPlan = () => readJson('locaiaPlan', null);
 
 export const savePlan = (plan) => writeJson('locaiaPlan', plan);
 
+export const getActiveStopIndex = () => Number(localStorage.getItem('locaiaActiveStopIndex') || 0);
+
+export const saveActiveStopIndex = (index) => localStorage.setItem('locaiaActiveStopIndex', String(index));
+
 export const getCollection = () => readJson('locaiaCollection', []);
 
 export const saveToCollection = (place) => {

@@ -70,48 +70,6 @@ input:focus-visible {
   box-shadow: 0 0 0 4px rgba(176, 112, 64, 0.12), 0 8px 24px rgba(16, 64, 64, 0.08);
 }
 
-.app-select-shell {
-  position: relative;
-}
-
-.app-select-shell::after {
-  content: 'expand_more';
-  font-family: 'Material Symbols Outlined';
-  font-size: 24px;
-  line-height: 1;
-  color: var(--locaia-primary);
-  pointer-events: none;
-  position: absolute;
-  right: 1rem;
-  bottom: 1.05rem;
-}
-
-.app-select {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 100%;
-  border: 0;
-  background: transparent;
-  background-image: none !important;
-  color: var(--locaia-primary);
-  padding-right: 2.5rem;
-  box-shadow: none;
-}
-
-.app-select::-ms-expand {
-  display: none;
-}
-
-.app-select option {
-  background: var(--locaia-card);
-  color: var(--locaia-ink);
-  font-family: 'Manrope', sans-serif;
-}
-
-.app-select option:disabled {
-  color: rgba(79, 86, 82, 0.55);
-}
-
 .app-textarea {
   appearance: none;
   -webkit-appearance: none;
