@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import i18n from '../../i18n';
 
-const SUPPORTED = ['en', 'ro', 'bg', 'sk', 'pl'];
+const SUPPORTED = ['en', 'ro', 'bg', 'sk', 'pl', 'cs'];
 
 const ChangeLanguage = () => {
   const { lang } = useParams();
