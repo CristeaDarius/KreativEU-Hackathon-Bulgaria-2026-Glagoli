@@ -150,14 +150,14 @@ const Concierge = () => {
       </section>
 
       <section className="sticky bottom-0 -mx-5 px-5 pt-3 pb-4 bg-background/95 backdrop-blur border-t border-outline-variant">
-        <div className="flex items-end gap-2 bg-surface-container-lowest border border-outline-variant rounded-[24px] p-2 shadow-sm">
+        <div className="app-control flex items-end gap-2 p-2">
           <textarea
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={selectedPlace ? `Ask about ${getPlaceName(selectedPlace)}` : 'Select a place first'}
             rows={1}
-            className="flex-1 resize-none bg-transparent outline-none px-3 py-3 text-[15px] max-h-28"
+            className="app-textarea flex-1 resize-none outline-none px-3 py-3 text-[15px] max-h-28"
           />
           <button
             type="button"

@@ -115,7 +115,7 @@ const BuildYourDay = () => {
                 <h2 className="text-[28px] leading-8 font-['Stack_Sans_Headline'] font-bold text-primary mt-2">How long and where?</h2>
               </div>
 
-              <div className="rounded-2xl bg-surface border border-outline-variant p-4 flex flex-col gap-4">
+              <div className="app-control p-4 flex flex-col gap-4">
                 <div className="flex items-end justify-between">
                   <span className="font-['Stack_Sans_Headline'] text-[22px] font-bold text-primary">{answers.hours} hours</span>
                   <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">3-16h</span>
@@ -126,16 +126,21 @@ const BuildYourDay = () => {
                   max="16"
                   value={answers.hours}
                   onChange={event => updateSingle('hours', Number(event.target.value))}
-                  className="w-full accent-[#B07040]"
+                  className="app-range"
+                  style={{ '--range-progress': `${((answers.hours - 3) / 13) * 100}%` }}
                 />
+                <div className="flex justify-between font-['IBM_Plex_Mono'] text-[10px] uppercase tracking-widest text-outline">
+                  <span>3h</span>
+                  <span>16h</span>
+                </div>
               </div>
 
-              <label className="rounded-2xl bg-surface border border-outline-variant p-4 flex flex-col gap-2">
+              <label className="app-control app-select-shell p-4 flex flex-col gap-2">
                 <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">Preferred city</span>
                 <select
                   value={answers.city}
                   onChange={event => updateSingle('city', event.target.value)}
-                  className="bg-transparent text-primary font-['Stack_Sans_Headline'] text-[22px] font-bold outline-none"
+                  className="app-select font-['Stack_Sans_Headline'] text-[22px] font-bold outline-none"
                 >
                   {cityOptions.map(city => (
                     <option key={city} value={city} disabled={city !== 'Svishtov'}>
@@ -164,7 +169,7 @@ const BuildYourDay = () => {
                       type="button"
                       key={option}
                       onClick={() => question.type === 'multi' ? toggleMulti(question.key, option) : updateSingle(question.key, option)}
-                      className={`w-full rounded-2xl border p-4 text-left flex items-center justify-between active:scale-[0.98] transition-all ${selected ? 'bg-primary text-on-primary border-primary' : 'bg-surface text-on-surface border-outline-variant'}`}
+                      className={`w-full rounded-2xl border p-4 text-left flex items-center justify-between shadow-sm active:scale-[0.98] transition-all ${selected ? 'bg-primary text-on-primary border-primary shadow-[0_8px_24px_rgba(16,64,64,0.16)]' : 'bg-surface-container-lowest text-on-surface border-outline-variant'}`}
                     >
                       <span className="text-[17px] font-['Manrope'] font-semibold">{option}</span>
                       <span className="material-symbols-outlined">{selected ? 'check_circle' : question.type === 'multi' ? 'add_circle' : 'radio_button_unchecked'}</span>
