@@ -25,13 +25,36 @@ const VisitPlace = () => {
   const streamRef = React.useRef(null);
 
   useEffect(() => {
-    setNarrationKeys(['visit.arrived', 'visit.heritage_desc', 'visit.mark_visited', 'visit.back_route', 'visit.take_picture', 'visit.cancel', 'visit.save']);
+    if (!placeId) return;
+
+    setNarrationKeys([
+      'visit.arrived',
+      'visit.heritage_desc',
+      'visit.mark_visited',
+      'visit.back_route',
+      'visit.take_picture',
+      'visit.cancel',
+      'visit.save'
+    ]);
+
     setLoading(true);
+
     fetchPlace(placeId)
-      .then(setPlace)
+      .then((p) => {
+        setPlace(p);
+
+        const savedPhotos = JSON.parse(localStorage.getItem('placePhotos') || '[]');
+        const match = savedPhotos.find(x => x.placeId === placeId);
+
+        if (match) {
+          setPhotoUrl(match.image);
+          setPhotoTaken(true);
+          setSaved(true);
+        }
+      })
       .catch(() => setError('This stop cannot be opened right now.'))
       .finally(() => setLoading(false));
-  }, [placeId]);
+  }, [placeId, setNarrationKeys]);
 
   const heritage = isHeritagePlace(place);
 
@@ -80,6 +103,20 @@ const VisitPlace = () => {
 
   const handleSave = () => {
     if (!place) return;
+
+    const entry = {
+      placeId: place.id,
+      image: photoUrl,
+      createdAt: Date.now(),
+    };
+
+    const existing = JSON.parse(localStorage.getItem('placePhotos') || '[]');
+
+    const updated = existing.filter(p => p.placeId !== place.id);
+    updated.push(entry);
+
+    localStorage.setItem('placePhotos', JSON.stringify(updated));
+
     markVisited(place);
     saveToCollection(place);
     setSaved(true);

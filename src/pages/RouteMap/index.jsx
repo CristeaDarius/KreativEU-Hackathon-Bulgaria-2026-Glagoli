@@ -33,6 +33,11 @@ const RouteMap = () => {
   const mapInstance = useRef(null);
   const markerLayer = useRef(null);
   const hasFitBounds = useRef(false);
+
+  const [activeAudio, setActiveAudio] = useState(null);
+  const [isPlayingDesc, setIsPlayingDesc] = useState(false);
+  const descAudioRef = useRef(null);
+
   const [places, setPlaces] = useState([]);
   const [plan, setPlan] = useState(null);
   const [activeIdx, setActiveIdx] = useState(0);
@@ -261,6 +266,44 @@ const RouteMap = () => {
     }
   };
 
+  const toggleDescriptionAudio = () => {
+    if (!active?.id) return;
+
+    const audioPath = `/short_descriptions/${active.id.toLowerCase()}.mp3`;
+
+    // stop if already playing
+    if (descAudioRef.current) {
+      descAudioRef.current.pause();
+      descAudioRef.current = null;
+      setIsPlayingDesc(false);
+      setActiveAudio(null);
+      return;
+    }
+
+    const audio = new Audio(audioPath);
+    descAudioRef.current = audio;
+    setActiveAudio(audioPath);
+    setIsPlayingDesc(true);
+
+    audio.onended = () => {
+      descAudioRef.current = null;
+      setIsPlayingDesc(false);
+      setActiveAudio(null);
+    };
+
+    audio.onerror = () => {
+      descAudioRef.current = null;
+      setIsPlayingDesc(false);
+      setActiveAudio(null);
+    };
+
+    audio.play().catch(() => {
+      descAudioRef.current = null;
+      setIsPlayingDesc(false);
+      setActiveAudio(null);
+    });
+  };
+
   return (
     <div className="min-h-full bg-background text-on-surface px-5 pt-4 pb-8 flex flex-col gap-4 font-['Manrope'] antialiased">
       <section className="bg-surface-container-lowest border border-outline-variant rounded-[24px] p-4 shadow-sm">
@@ -287,6 +330,30 @@ const RouteMap = () => {
 
       {active && (
         <section className="bg-surface-container-lowest border border-outline-variant rounded-[28px] shadow-sm overflow-hidden">
+          
+          {active?.id && (
+            <>
+              {console.log('active:', active)}
+              {console.log('image src:', `/images/${active.id}.jpeg`)}
+
+              <div className="w-full h-[180px] overflow-hidden bg-surface-container">
+                <img
+                  src={`/images/${active.id}.jpeg`}
+                  alt={getPlaceName(active)}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    if (e.currentTarget.dataset.fallback === "true") return;
+
+                    e.currentTarget.dataset.fallback = "true";
+                    console.log('image failed:', e.currentTarget.src);
+
+                    e.currentTarget.src = '/images/fallback.jpeg';
+                  }}
+                />
+              </div>
+            </>
+          )}
+          
           <div className="p-5 border-b border-outline-variant">
             <div className="flex justify-between items-center mb-2">
               <span className="font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant uppercase">Current Stop</span>
@@ -299,13 +366,25 @@ const RouteMap = () => {
           </div>
 
           <div className="p-5 flex flex-col gap-4">
-            <p className="text-[15px] text-on-surface leading-6 max-h-24 overflow-hidden">
+            <p className="text-[15px] text-on-surface leading-6">
               {active.additional_info || 'A cultural memory point connected to Svishtov identity.'}
             </p>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <button type="button" onClick={markCurrentVisited} className={`py-3 rounded-2xl font-['IBM_Plex_Mono'] text-[12px] font-bold active:scale-[0.98] transition-transform flex items-center justify-center gap-2 ${currentVisited ? 'bg-secondary text-on-secondary' : 'bg-surface border border-outline-variant text-on-surface'}`}>
                 <span className="material-symbols-outlined text-[18px]">{currentVisited ? 'check_circle' : 'done'}</span> {currentVisited ? 'Visited' : 'Mark visited'}
               </button>
+
+              <button
+                  type="button"
+                  onClick={toggleDescriptionAudio}
+                  className="bg-surface border border-outline-variant text-on-surface py-3 rounded-2xl font-['IBM_Plex_Mono'] text-[12px] font-bold active:scale-[0.98] transition-transform flex items-center justify-center gap-2"
+              >
+                <span className="material-symbols-outlined text-[18px]">
+                  {isPlayingDesc ? 'stop' : 'volume_up'}
+                </span>
+                {isPlayingDesc ? 'Stop' : 'Listen'}
+              </button>
+
               <button type="button" onClick={() => navigate(`/visit/${encodeURIComponent(active.id)}`)} className="bg-primary text-on-primary py-3 rounded-2xl font-['IBM_Plex_Mono'] text-[12px] font-bold active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
                 <span className="material-symbols-outlined text-[18px]">near_me</span> Go there
               </button>

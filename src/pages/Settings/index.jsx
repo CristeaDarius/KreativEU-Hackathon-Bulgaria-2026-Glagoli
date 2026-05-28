@@ -13,8 +13,8 @@ const Settings = () => {
 
   const items = [
     { icon: 'accessible_forward', key: 'accessible', title: <TTSHighlight ttsKey="settings.accessible_title">{t('settings.accessible_title')}</TTSHighlight>, text: <TTSHighlight ttsKey="settings.accessible_desc">{t('settings.accessible_desc')}</TTSHighlight> },
-    { icon: 'volume_up', key: 'audio', title: <TTSHighlight ttsKey="settings.audio_title">{t('settings.audio_title')}</TTSHighlight>, text: <TTSHighlight ttsKey="settings.audio_desc">{t('settings.audio_desc')}</TTSHighlight> },
-    { icon: 'translate', key: 'language', title: <TTSHighlight ttsKey="settings.language_title">{t('settings.language_title')}</TTSHighlight>, text: <TTSHighlight ttsKey="settings.language_desc">{t('settings.language_desc')}</TTSHighlight> },
+    // { icon: 'volume_up', key: 'audio', title: <TTSHighlight ttsKey="settings.audio_title">{t('settings.audio_title')}</TTSHighlight>, text: <TTSHighlight ttsKey="settings.audio_desc">{t('settings.audio_desc')}</TTSHighlight> },
+    // { icon: 'translate', key: 'language', title: <TTSHighlight ttsKey="settings.language_title">{t('settings.language_title')}</TTSHighlight>, text: <TTSHighlight ttsKey="settings.language_desc">{t('settings.language_desc')}</TTSHighlight> },
   ];
 
   return (
