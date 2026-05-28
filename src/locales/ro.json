@@ -1,5 +1,4 @@
 {
-  "app": { "name": "CityScan" },
   "nav": { "explore": "Explorează", "routes": "Rute", "compendium": "Compendiu", "concierge": "Concierge" },
   "splash": { "subtitle": "Ruta Culturală Svishtov" },
   "login": {
@@ -128,6 +127,9 @@
     "cancel": "Anulează",
     "save": "Salvează",
     "saved": "Salvat",
+    "open_camera": "Deschide camera",
+    "upload_photo": "Încarcă fotografie",
+    "retake": "Refă fotografia",
     "non_heritage_visit": "Poți marca acest loc ca vizitat. Nu va fi salvat în colecția ta patrimonială."
   },
   "not_found": {

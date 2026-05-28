@@ -1,5 +1,4 @@
 {
-  "app": { "name": "CityScan" },
   "nav": { "explore": "Explore", "routes": "Routes", "compendium": "Compendium", "concierge": "Concierge" },
   "splash": { "subtitle": "Svishtov Cultural Route" },
   "login": {
@@ -128,6 +127,9 @@
     "cancel": "Cancel",
     "save": "Save",
     "saved": "Saved",
+    "open_camera": "Open camera",
+    "upload_photo": "Upload photo instead",
+    "retake": "Retake",
     "non_heritage_visit": "You can mark this place as visited. It will not be saved to your heritage collection."
   },
   "not_found": {

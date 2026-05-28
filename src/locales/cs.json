@@ -1,5 +1,4 @@
 {
-  "app": { "name": "CityScan" },
   "nav": { "explore": "Prozkoumat", "routes": "Trasy", "compendium": "Kompendium", "concierge": "Concierge" },
   "splash": { "subtitle": "Kulturní trasa Svishtov" },
   "login": {
@@ -128,6 +127,9 @@
     "cancel": "Zrušit",
     "save": "Uložit",
     "saved": "Uloženo",
+    "open_camera": "Otevřít kameru",
+    "upload_photo": "Nahrát fotografii",
+    "retake": "Vyfotit znovu",
     "non_heritage_visit": "Můžete označit toto místo jako navštívené. Nebude uloženo do vaší památkové sbírky."
   },
   "not_found": {
