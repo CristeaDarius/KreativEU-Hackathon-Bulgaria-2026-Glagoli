@@ -5,7 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d0d3326-e762-4916-a9ee-5dc297175b3c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/routes/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/aleko_konstantinov_house_museum.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/danube_riverside_area.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/holy_trinity_church.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/the_donors_monument.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/the_first_bulgarian_community_center.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/the_roman_city_of_novae.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/tsenov_academy_of_economics.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Compendium/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Compendium/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/RouteMap/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/RouteMap/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Settings/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Settings/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/VisitPlace/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VisitPlace/index.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,23 +31,23 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "CristeaDarius"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;CristeaDarius&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/CristeaDarius/KreativEU-Hackathon-Bulgaria-2026-Glagoli.git",
-    "accountId": "578f7c6c-60da-4206-93d9-57cd560359e8"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/CristeaDarius/KreativEU-Hackathon-Bulgaria-2026-Glagoli.git&quot;,
+    &quot;accountId&quot;: &quot;578f7c6c-60da-4206-93d9-57cd560359e8&quot;
   }
-}]]></component>
+}</component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/bin/php" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3EJUYJRjWXDxFhF3iniEE0IwJT2" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -44,10 +57,11 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "text-to-spech",
     "last_opened_file_path": "/home/darius/Glagoli",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -73,6 +87,7 @@
       <option name="presentableId" value="Default" />
       <updated>1779896212232</updated>
       <workItem from="1779896213488" duration="1129000" />
+      <workItem from="1779936355297" duration="1688000" />
     </task>
     <servers />
   </component>

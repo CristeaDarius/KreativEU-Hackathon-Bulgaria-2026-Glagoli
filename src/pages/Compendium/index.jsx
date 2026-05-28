@@ -10,11 +10,35 @@ const Compendium = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { setNarrationKeys } = useNarration();
+  const [photos, setPhotos] = useState({});
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    setNarrationKeys(['compendium.title', 'compendium.subtitle', 'compendium.route_memory', 'compendium.level', 'compendium.heritage_site', 'compendium.open_story', 'compendium.empty', 'compendium.discover_more', 'compendium.discover_more_desc']);
-    const load = () => setPlaces(getCollection());
+    setNarrationKeys([
+      'compendium.title',
+      'compendium.subtitle',
+      'compendium.route_memory',
+      'compendium.level',
+      'compendium.heritage_site',
+      'compendium.open_story',
+      'compendium.empty',
+      'compendium.discover_more',
+      'compendium.discover_more_desc'
+    ]);
+
+    const load = () => {
+      setPlaces(getCollection());
+
+      const savedPhotos = JSON.parse(localStorage.getItem('placePhotos') || '[]');
+
+      const map = {};
+      for (const p of savedPhotos) {
+        map[p.placeId] = p.image;
+      }
+
+      setPhotos(map);
+    };
+
     load();
     window.addEventListener('focus', load);
     return () => window.removeEventListener('focus', load);

@@ -27,14 +27,29 @@ const serialize = (place) => ({
 // Get all places
 router.get('/places', (req, res) => {
   const places = readAll();
-  res.json(places.map(p => ({ id: p.id, name: p.name })));
+  res.json(
+    places.map(p => ({
+      id: p.id.toLowerCase(),
+      name: p.name,
+    }))
+  );
 });
 
 // Get one place
 router.get('/places/:id', (req, res) => {
-  const place = readAll().find(p => p.id.toLowerCase() === req.params.id.toLowerCase());
+  const place = readAll().find(
+    p => p.id.toLowerCase() === req.params.id.toLowerCase()
+  );
+
   if (!place) return res.status(404).json({ error: 'Not found' });
-  res.json(serialize({ ...place, description: readDescription(place.id) }));
+
+  const normalized = {
+    ...place,
+    id: place.id.toLowerCase(),
+    description: readDescription(place.id),
+  };
+
+  res.json(serialize(normalized));
 });
 
 // Hidden Svishtov
