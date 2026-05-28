@@ -11,9 +11,8 @@ const writeJson = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
-export const isLoggedIn = () => localStorage.getItem('locaiaLoggedIn') === 'true';
-
-export const setLoggedIn = () => localStorage.setItem('locaiaLoggedIn', 'true');
+export const isLoggedIn = () => true;
+export const setLoggedIn = () => {};
 
 export const getProfile = () => readJson('locaiaProfile', null);
 

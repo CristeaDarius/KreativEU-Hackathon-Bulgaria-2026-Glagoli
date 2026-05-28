@@ -1,5 +1,4 @@
 {
-  "app": { "name": "CityScan" },
   "nav": { "explore": "Odkryj", "routes": "Trasy", "compendium": "Kompendium", "concierge": "Concierge" },
   "splash": { "subtitle": "Kulturowy Szlak Svishtov" },
   "login": {
@@ -128,6 +127,9 @@
     "cancel": "Anuluj",
     "save": "Zapisz",
     "saved": "Zapisano",
+    "open_camera": "Otwórz aparat",
+    "upload_photo": "Prześlij zdjęcie",
+    "retake": "Zrób ponownie",
     "non_heritage_visit": "Możesz oznaczyć to miejsce jako odwiedzone. Nie zostanie zapisane w kolekcji dziedzictwa."
   },
   "not_found": {

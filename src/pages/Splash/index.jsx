@@ -8,7 +8,7 @@ const Splash = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    const timer = setTimeout(() => navigate(isLoggedIn() ? '/today' : '/login', { replace: true }), 1600);
+    const timer = setTimeout(() => navigate('/login', { replace: true }), 1600);
     return () => clearTimeout(timer);
   }, [navigate]);
 

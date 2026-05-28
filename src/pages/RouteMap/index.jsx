@@ -4,6 +4,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { fetchPlace, fetchPlaces, getPlaceName } from '../../lib/api';
 import { getActiveStopIndex, getPlan, getVisited, markVisited, saveActiveStopIndex, savePlan } from '../../lib/appState';
+import { useNarration } from '../../context/NarrationContext';
+import { useTranslation } from 'react-i18next';
 
 // Fix default marker icons broken by Vite
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -25,6 +27,8 @@ const FALLBACK_PINS = [
 
 const RouteMap = () => {
   const navigate = useNavigate();
+  const { setNarrationKeys } = useNarration();
+  const { i18n } = useTranslation();
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markerLayer = useRef(null);
@@ -43,6 +47,7 @@ const RouteMap = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    setNarrationKeys(['route_map.title', 'route_map.current_stop', 'route_map.heritage_site', 'route_map.next_stop', 'route_map.prev_stop', 'route_map.open_stop', 'route_map.mark_visited', 'route_map.go_there', 'route_map.end_route', 'route_map.route_ended', 'route_map.trip_summary', 'route_map.in_route_ai', 'route_map.ask_stop', 'route_map.fallback_desc']);
     setLoading(true);
     setError('');
     hasFitBounds.current = false;
@@ -165,6 +170,36 @@ const RouteMap = () => {
     setRouteEnded(true);
   };
 
+  const [routeChatAudio, setRouteChatAudio] = useState({}); // messageIndex -> audioUrl
+  const [playingIdx, setPlayingIdx] = useState(null);
+  const chatAudioRef = useRef(null);
+
+  const playMessageAudio = (url, idx) => {
+    if (chatAudioRef.current) { chatAudioRef.current.pause(); chatAudioRef.current = null; }
+    if (playingIdx === idx) { setPlayingIdx(null); return; }
+    const audio = new Audio(url);
+    chatAudioRef.current = audio;
+    setPlayingIdx(idx);
+    audio.onended = () => { setPlayingIdx(null); chatAudioRef.current = null; };
+    audio.onerror = () => { setPlayingIdx(null); chatAudioRef.current = null; };
+    audio.play();
+  };
+
+  const generateAndPlayTTS = async (text, messageIdx) => {
+    try {
+      const res = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, voiceId: 'EXAVITQu4vr4xnSDxMaL' }), // Sarah
+      });
+      if (!res.ok) return;
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      setRouteChatAudio(prev => ({ ...prev, [messageIdx]: url }));
+      playMessageAudio(url, messageIdx);
+    } catch { /* silent fail */ }
+  };
+
   const sendRouteChatMessage = async () => {
     if (!active || !routeChatInput.trim() || routeChatLoading) return;
 
@@ -178,9 +213,15 @@ const RouteMap = () => {
     try {
       if (!import.meta.env.VITE_MISTRAL_API_KEY) throw new Error('Missing Mistral API key');
 
+      const langNames = { en: 'English', ro: 'Romanian', bg: 'Bulgarian', sk: 'Slovak', pl: 'Polish', cs: 'Czech' };
+      const langName = langNames[i18n.language] || 'English';
+      const descText = typeof active.description === 'object' && active.description !== null && Object.keys(active.description).length > 0
+        ? Object.entries(active.description).filter(([k]) => k !== 'sources').map(([k, v]) => `${k}: ${v}`).join('\n\n')
+        : active.additional_info || '';
+
       const systemMessage = {
         role: 'system',
-        content: `You are Locaia's in-route guide for "${getPlaceName(active)}". Answer briefly and helpfully for a mobile user currently visiting this stop. Use only the description below. If the answer is not in the description, say "I don't have that information."\n\nDescription:\n${active.description || active.additional_info || ''}`,
+        content: `You are Locaia's in-route guide for "${getPlaceName(active)}". Answer briefly and helpfully for a mobile user currently visiting this stop. Use only the description below. If the answer is not in the description, say you don't have that information. IMPORTANT: Always respond in ${langName}.\n\nDescription:\n${descText}`,
       };
 
       const res = await fetch('https://api.mistral.ai/v1/chat/completions', {
@@ -198,7 +239,14 @@ const RouteMap = () => {
       if (!res.ok) throw new Error('Unable to contact guide');
       const data = await res.json();
       const reply = data.choices?.[0]?.message;
-      setRouteChatMessages(reply ? [...updatedMessages, reply] : [...updatedMessages, { role: 'assistant', content: 'I could not create an answer from this stop description.' }]);
+      const finalMessages = reply ? [...updatedMessages, reply] : [...updatedMessages, { role: 'assistant', content: 'I could not create an answer from this stop description.' }];
+      setRouteChatMessages(finalMessages);
+
+      // Generate TTS for the AI reply
+      const replyContent = finalMessages[finalMessages.length - 1]?.content;
+      if (replyContent && finalMessages[finalMessages.length - 1]?.role === 'assistant') {
+        generateAndPlayTTS(replyContent, finalMessages.length - 1);
+      }
     } catch {
       setRouteChatError('AI guide is unavailable. Check the API key or try again later.');
     } finally {
@@ -277,10 +325,21 @@ const RouteMap = () => {
                   <div className="max-h-48 overflow-y-auto custom-scrollbar flex flex-col gap-2 pr-1">
                     {routeChatMessages.map((message, index) => {
                       const isUser = message.role === 'user';
+                      const audioUrl = routeChatAudio[index];
                       return (
                         <div key={`${message.role}-${index}`} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
                           <div className={`max-w-[88%] rounded-[18px] px-3 py-2 text-[13px] leading-5 ${isUser ? 'bg-primary text-on-primary rounded-br-md' : 'bg-surface-container-lowest border border-outline-variant text-on-surface rounded-bl-md'}`}>
                             {message.content}
+                            {!isUser && audioUrl && (
+                              <button
+                                type="button"
+                                onClick={() => playMessageAudio(audioUrl, index)}
+                                className="mt-2 flex items-center gap-1 font-['IBM_Plex_Mono'] text-[11px] text-outline hover:text-primary transition-colors"
+                              >
+                                <span className="material-symbols-outlined text-[16px]">{playingIdx === index ? 'stop' : 'volume_up'}</span>
+                                {playingIdx === index ? 'Stop' : 'Play'}
+                              </button>
+                            )}
                           </div>
                         </div>
                       );

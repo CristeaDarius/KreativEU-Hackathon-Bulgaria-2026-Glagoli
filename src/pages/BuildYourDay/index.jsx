@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchPlaces } from '../../lib/api';
 import { saveActiveStopIndex, savePlan } from '../../lib/appState';
+import { useNarration } from '../../context/NarrationContext';
 
 const cityOptions = ['Svishtov', 'Sofia', 'Plovdiv', 'Varna', 'Burgas', 'Ruse', 'Veliko Tarnovo'];
 
@@ -25,6 +26,11 @@ const getAnswerCount = (answer) => Array.isArray(answer) ? answer.length : answe
 
 const BuildYourDay = () => {
   const navigate = useNavigate();
+  const { setNarrationKeys } = useNarration();
+
+  useEffect(() => {
+    setNarrationKeys(['build.label', 'build.title', 'build.description', 'build.back', 'build.next', 'build.generate']);
+  }, []);
   const [answers, setAnswers] = useState({ hours: 4, city: 'Svishtov' });
   const [step, setStep] = useState(0);
   const [places, setPlaces] = useState([]);

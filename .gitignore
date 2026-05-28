@@ -3,3 +3,4 @@ dist
 .env
 .kiro/
 tts/*
+public/audio/

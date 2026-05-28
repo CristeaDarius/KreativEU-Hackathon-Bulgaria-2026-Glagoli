@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useNarration } from '../../context/NarrationContext';
 import { fetchPlace, fetchPlaces, getPlaceName } from '../../lib/api';
+import TTSHighlight from '../../components/TTSHighlight';
 
 const Concierge = () => {
   const { state } = useLocation();
   const { t } = useTranslation();
+  const { setNarrationKeys } = useNarration();
   const [places, setPlaces] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [input, setInput] = useState('');
@@ -17,6 +20,7 @@ const Concierge = () => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
+    setNarrationKeys([]);
     setLoadingPlaces(true);
     fetchPlaces()
       .then(data => {
@@ -54,7 +58,7 @@ const Concierge = () => {
 
     const systemMessage = {
       role: 'system',
-      content: `You are a guide for "${getPlaceName(selectedPlace)}". You may ONLY answer using the information in the description below. Do not use any outside knowledge, do not make assumptions, and do not invent details. If the answer is not in the description, say "I don't have that information."\n\nDescription:\n${selectedPlace.description || selectedPlace.additional_info || ''}`,
+      content: `You are a guide for "${getPlaceName(selectedPlace)}". You may ONLY answer using the information in the description below. Do not use any outside knowledge, do not make assumptions, and do not invent details. If the answer is not in the description, say "I don't have that information."\n\nDescription:\n${typeof selectedPlace.description === 'object' ? Object.entries(selectedPlace.description).filter(([k]) => k !== 'sources').map(([k,v]) => `${k}: ${v}`).join('\n\n') : selectedPlace.description || selectedPlace.additional_info || ''}`,
     };
 
     const userMessage = { role: 'user', content: input.trim() };
@@ -100,8 +104,8 @@ const Concierge = () => {
   return (
     <div className="min-h-full flex flex-col px-5 pt-4 gap-4">
       <section className="flex gap-2 overflow-x-auto pb-1 custom-scrollbar -mx-5 px-5">
-        {loadingPlaces && <span className="rounded-full bg-surface-container px-4 py-2 font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant">{t('home.loading')}</span>}
-        {!loadingPlaces && places.length === 0 && <span className="rounded-full bg-surface-container px-4 py-2 font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant">{t('concierge.no_places')}</span>}
+        {loadingPlaces && <span className="rounded-full bg-surface-container px-4 py-2 font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant"><TTSHighlight ttsKey="home.loading">{t('home.loading')}</TTSHighlight></span>}
+        {!loadingPlaces && places.length === 0 && <span className="rounded-full bg-surface-container px-4 py-2 font-['IBM_Plex_Mono'] text-[12px] text-on-surface-variant"><TTSHighlight ttsKey="concierge.no_places">{t('concierge.no_places')}</TTSHighlight></span>}
         {places.map(place => {
           const active = selectedPlace?.id?.toLowerCase() === place.id.toLowerCase();
           return (
@@ -120,7 +124,7 @@ const Concierge = () => {
 
       {selectedPlace && (
         <section className="rounded-[24px] bg-surface-container-lowest border border-outline-variant p-4 shadow-sm">
-          <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline">{t('concierge.current_story')}</span>
+          <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-outline"><TTSHighlight ttsKey="concierge.current_story">{t('concierge.current_story')}</TTSHighlight></span>
           <h1 className="text-[22px] leading-7 font-['Stack_Sans_Headline'] font-semibold text-primary mt-1">{getPlaceName(selectedPlace)}</h1>
         </section>
       )}
@@ -140,7 +144,7 @@ const Concierge = () => {
         })}
         {loadingReply && (
           <div className="flex justify-start">
-            <div className="rounded-[22px] rounded-bl-md bg-surface-container-lowest border border-outline-variant px-4 py-3 text-on-surface-variant">{t('concierge.thinking')}</div>
+            <div className="rounded-[22px] rounded-bl-md bg-surface-container-lowest border border-outline-variant px-4 py-3 text-on-surface-variant"><TTSHighlight ttsKey="concierge.thinking">{t('concierge.thinking')}</TTSHighlight></div>
           </div>
         )}
         <div ref={messagesEndRef} />

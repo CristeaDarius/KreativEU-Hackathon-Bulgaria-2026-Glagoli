@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { saveProfile, setLoggedIn } from '../../lib/appState';
 import { useTranslation } from 'react-i18next';
+import { useNarration } from '../../context/NarrationContext';
+import TTSHighlight from '../../components/TTSHighlight';
 
 const setupQuestions = [
   { key: 'age', label: 'Age group', options: ['Under 18', '18-25', '26-40', '41-65', '65+'] },
@@ -12,7 +14,10 @@ const setupQuestions = [
 const Questionnaire = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { setNarrationKeys } = useNarration();
   const [answers, setAnswers] = useState({});
+
+  useEffect(() => { setNarrationKeys(['questionnaire.label', 'questionnaire.title', 'questionnaire.description', 'questionnaire.skip', 'questionnaire.continue']); }, []);
 
   const finish = () => {
     saveProfile(answers);
@@ -23,9 +28,9 @@ const Questionnaire = () => {
   return (
     <div className="min-h-dvh px-5 pt-5 pb-28 flex flex-col gap-5">
       <section className="rounded-[28px] bg-primary text-on-primary p-6 shadow-sm">
-        <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-primary-fixed-dim">{t('questionnaire.label')}</span>
-        <h1 className="text-[31px] leading-9 font-['Stack_Sans_Headline'] font-bold mt-2">{t('questionnaire.title')}</h1>
-        <p className="text-primary-fixed-dim mt-3 leading-6">{t('questionnaire.description')}</p>
+        <span className="font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-widest text-primary-fixed-dim"><TTSHighlight ttsKey="questionnaire.label">{t('questionnaire.label')}</TTSHighlight></span>
+        <h1 className="text-[31px] leading-9 font-['Stack_Sans_Headline'] font-bold mt-2"><TTSHighlight ttsKey="questionnaire.title">{t('questionnaire.title')}</TTSHighlight></h1>
+        <p className="text-primary-fixed-dim mt-3 leading-6"><TTSHighlight ttsKey="questionnaire.description">{t('questionnaire.description')}</TTSHighlight></p>
       </section>
 
       {setupQuestions.map(question => (
@@ -35,9 +40,7 @@ const Questionnaire = () => {
             {question.options.map(option => {
               const active = answers[question.key] === option;
               return (
-                <button
-                  key={option}
-                  type="button"
+                <button key={option} type="button"
                   onClick={() => setAnswers(current => ({ ...current, [question.key]: option }))}
                   className={`rounded-2xl border px-3 py-3 text-[13px] font-['IBM_Plex_Mono'] active:scale-[0.98] transition-all ${active ? 'bg-primary text-on-primary border-primary' : 'bg-surface text-on-surface border-outline-variant'}`}
                 >
@@ -50,8 +53,12 @@ const Questionnaire = () => {
       ))}
 
       <section className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-5 pt-4 pb-5 bg-background/95 backdrop-blur border-t border-outline-variant grid grid-cols-2 gap-3">
-        <button type="button" onClick={finish} className="bg-surface border border-outline-variant text-on-surface rounded-2xl py-4 font-['IBM_Plex_Mono'] text-[13px] font-bold active:scale-[0.98] transition-transform">{t('questionnaire.skip')}</button>
-        <button type="button" onClick={finish} className="bg-primary text-on-primary rounded-2xl py-4 font-['IBM_Plex_Mono'] text-[13px] font-bold active:scale-[0.98] transition-transform">{t('questionnaire.continue')}</button>
+        <button type="button" onClick={finish} className="bg-surface border border-outline-variant text-on-surface rounded-2xl py-4 font-['IBM_Plex_Mono'] text-[13px] font-bold active:scale-[0.98] transition-transform">
+          <TTSHighlight ttsKey="questionnaire.skip">{t('questionnaire.skip')}</TTSHighlight>
+        </button>
+        <button type="button" onClick={finish} className="bg-primary text-on-primary rounded-2xl py-4 font-['IBM_Plex_Mono'] text-[13px] font-bold active:scale-[0.98] transition-transform">
+          <TTSHighlight ttsKey="questionnaire.continue">{t('questionnaire.continue')}</TTSHighlight>
+        </button>
       </section>
     </div>
   );
